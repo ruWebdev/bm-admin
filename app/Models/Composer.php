@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
+
+class Composer extends Model
+{
+    use HasUuids, HasFactory;
+
+    protected $table = 'composers';
+    protected $primaryKey = 'id';
+
+    public $incrementing = false;
+    public $timestamps = true;
+
+    protected $fillable = [
+        'page_alias',
+        'last_name',
+        'first_name',
+        'first_name_short',
+        'birth_date',
+        'death_date',
+        'main_photo',
+        'short_description',
+        'long_description',
+    ];
+}
