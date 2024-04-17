@@ -75,6 +75,12 @@ Route::controller(RulesController::class)->middleware(['auth', 'verified'])->gro
     }
 );
 
+Route::controller(SponsorController::class)->middleware(['auth', 'verified'])->group(
+    function () {
+        Route::get('/sponsor', 'index')->name('dashboard'); // Отправная точка        
+    }
+);
+
 Route::controller(ComposerController::class)->middleware(['auth', 'verified'])->group(
     function () {
         Route::get('/composers', 'index')->name('dashboard'); // Отправная точка      
@@ -82,12 +88,6 @@ Route::controller(ComposerController::class)->middleware(['auth', 'verified'])->
         Route::get('/composers/view/{id}', 'viewComposer')->name('dashboard'); // Отправная точка        
         Route::post('/composers/create', 'createComposer')->name('dashboard'); // Отправная точка        
         Route::post('/composers/save_changes/{id}', 'updateComposer')->name('dashboard'); // Отправная точка        
-    }
-);
-
-Route::controller(SponsorController::class)->middleware(['auth', 'verified'])->group(
-    function () {
-        Route::get('/sponsor', 'index')->name('dashboard'); // Отправная точка        
     }
 );
 
