@@ -36,7 +36,7 @@ const submit = () => {
 
 
         <h4 class="h4 text-center mb-4" style="margin-bottom: 80px !important;">
-            Войдите в свой аккаунт
+            Кабинет администратора
         </h4>
         <form @submit.prevent="submit">
             <div class="mb-3 mt-4">
@@ -70,10 +70,6 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
-        <div class="text-center text-muted mt-3">
-            Нет аккаунта? <a href="/register" tabindex="-1">Зарегистрируйтесь</a>
-        </div>
-
 
     </GuestLayout>
 </template>
