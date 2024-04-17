@@ -14,6 +14,7 @@ use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\ComposerController;
+use App\Http\Controllers\QuoteController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -88,6 +89,16 @@ Route::controller(ComposerController::class)->middleware(['auth', 'verified'])->
         Route::get('/composers/view/{id}', 'viewComposer')->name('composers.view'); // Отправная точка        
         Route::post('/composers/create', 'createComposer')->name('composer.create'); // Отправная точка        
         Route::post('/composers/save_changes/{id}', 'updateComposer')->name('composers.update'); // Отправная точка        
+    }
+);
+
+Route::controller(QuoteController::class)->middleware(['auth', 'verified'])->group(
+    function () {
+        Route::get('/quotes', 'index')->name('quotes'); // Отправная точка      
+
+        Route::get('/quotes/view/{id}', 'viewQuote')->name('quotes.view'); // Отправная точка        
+        Route::post('/quotes/create', 'createQuote')->name('quotes.create'); // Отправная точка        
+        Route::post('/quotes/save_changes/{id}', 'updateQuote')->name('quotes.update'); // Отправная точка        
     }
 );
 

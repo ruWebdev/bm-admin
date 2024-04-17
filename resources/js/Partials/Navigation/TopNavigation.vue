@@ -237,17 +237,20 @@ function dismissNotification(index) {
                                 </span>
                                 </Link>
                                 <div class="dropdown-menu">
-                                    <Link class="dropdown-item" href="/composers" target="_blank" rel="noopener">
+                                    <Link class="dropdown-item" href="/composers" rel="noopener">
                                     Композиторы
                                     </Link>
-                                    <Link class="dropdown-item" href="/instruments">
+                                    <Link class="dropdown-item" href="/instruments" rel="noopener">
                                     Музыкальные инструменты
                                     </Link>
-                                    <Link class="dropdown-item" href="/dictionary" target="_blank" rel="noopener">
+                                    <Link class="dropdown-item" href="/dictionary" rel="noopener">
                                     Словарь терминов
                                     </Link>
-                                    <Link class="dropdown-item" href="/literature" target="_blank" rel="noopener">
+                                    <Link class="dropdown-item" href="/literature" rel="noopener">
                                     Литература
+                                    </Link>
+                                    <Link class="dropdown-item" href="/quotes" rel="noopener">
+                                    Цитаты
                                     </Link>
                                 </div>
                             </li>
