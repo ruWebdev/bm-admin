@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('page_alias');
             $table->string('last_name');
             $table->string('first_name');
+            $table->string('first_name_short');
             $table->string('birth_date');
             $table->string('death_date');
             $table->string('main_photo');
