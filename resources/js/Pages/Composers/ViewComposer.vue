@@ -18,6 +18,15 @@ import ContentLayout from '@/Layouts/ContentLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import translitRusEng from 'translit-rus-eng'
 
+import CKEditor from '@ckeditor/ckeditor5-vue'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+
+const editor = ClassicEditor
+const ckeditor = CKEditor.component
+const editorConfig = {
+    toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+}
+
 const props = defineProps(['data']);
 
 const mainComposerForm = ref({
@@ -165,8 +174,10 @@ async function saveChanges() {
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Подробная биография</label>
-                                            <textarea class="form-control" rows="10"
-                                                v-model="mainComposerForm.long_description"></textarea>
+                                            <ckeditor :editor="editor" v-model="mainComposerForm.long_description"
+                                                :config="editorConfig">
+                                            </ckeditor>
+
                                         </div>
                                     </div>
                                     <div class="col-md-12">
