@@ -51,13 +51,17 @@ class ComposerController extends Controller
         $composer = Composer::find($id);
 
         $composer->last_name = $request->last_name;
+        $composer->last_name_en = $request->last_name_en;
         $composer->first_name = $request->first_name;
+        $composer->first_name_en = $request->first_name_en;
         $composer->first_name_short = $request->first_name_short;
+        $composer->first_name_short_en = $request->first_name_short_en;
         $composer->birth_date = $request->birth_date;
         $composer->death_date = $request->death_date;
         $composer->short_description = $request->short_description;
         $composer->long_description = $request->long_description;
         $composer->page_alias = $request->page_alias;
+        $composer->enabled = true;
 
         $composer->save();
     }

@@ -128,14 +128,14 @@ onMounted(async () => {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Фамилия</label>
+                                    <label class="form-label">Фамилия (на русском)</label>
                                     <input type="text" class="form-control" name="example-text-input"
                                         placeholder="Заполните поле" v-model="newComposerForm.last_name">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Имя</label>
+                                    <label class="form-label">Имя (на русском)</label>
                                     <input type="text" class="form-control" name="example-text-input"
                                         placeholder="Заполните поле" v-model="newComposerForm.first_name">
                                 </div>

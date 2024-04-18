@@ -24,8 +24,8 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
             .use(plugin)
-            .use(pinia)
-            .use(Toast, { position: POSITION.BOTTOM_RIGHT })
+            .use(pinia).use(Toast, { position: POSITION.BOTTOM_RIGHT })
+
             .use(ZiggyVue)
             .mount(el);
     },

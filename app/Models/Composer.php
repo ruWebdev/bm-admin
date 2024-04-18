@@ -19,8 +19,11 @@ class Composer extends Model
     protected $fillable = [
         'page_alias',
         'last_name',
+        'last_name_en',
         'first_name',
+        'first_name_en',
         'first_name_short',
+        'first_name_short_en',
         'birth_date',
         'death_date',
         'main_photo',

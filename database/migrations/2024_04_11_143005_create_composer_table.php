@@ -14,15 +14,18 @@ return new class extends Migration
         Schema::create('composers', function (Blueprint $table) {
             $table->uuid('id');
             $table->primary('id');
-            $table->string('page_alias');
+            $table->string('page_alias')->nullable();
             $table->string('last_name');
             $table->string('first_name');
-            $table->string('first_name_short');
-            $table->string('birth_date');
-            $table->string('death_date');
-            $table->string('main_photo');
-            $table->string('short_description');
-            $table->text('long_description');
+            $table->string('first_name_short')->nullable();
+            $table->string('last_name_en')->nullable();
+            $table->string('first_name_en')->nullable();
+            $table->string('first_name_short_en')->nullable();
+            $table->string('birth_date')->nullable();
+            $table->string('death_date')->nullable();
+            $table->string('main_photo')->nullable();
+            $table->string('short_description')->nullable();
+            $table->text('long_description')->nullable();
             $table->boolean('enabled')->default(false);
             $table->timestamps();
         });
