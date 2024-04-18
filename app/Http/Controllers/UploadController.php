@@ -38,7 +38,7 @@ class UploadController extends Controller
 
         if ($request->type == 'main_photo') {
 
-            if ($composer->main_photo != '' && $composer->main_photo != 'composers/no-composer-image.jpg') {
+            if ($composer->main_photo != '' && $composer->main_photo != 'composers/no-composer-photo.jpg') {
                 Storage::disk('public')->delete($composer->main_photo);
             }
 
@@ -49,7 +49,7 @@ class UploadController extends Controller
 
         } else if ($request->type == 'page_photo') {
 
-            if ($composer->page_photo != '' && $composer->page_photo != 'composers/no-composer-image.jpg') {
+            if ($composer->page_photo != '' && $composer->page_photo != 'composers/no-composer-photo.jpg') {
                 Storage::disk('public')->delete($composer->page_photo);
             } 
 
