@@ -7,8 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Музыка Барокко - Личный кабинет</title>
     <!-- CSS files -->
-    <link href="/assets/css/tabler.min.css" rel="stylesheet" />
-    <link href="/assets/css/tabler-vendors.min.css" rel="stylesheet" />
     <style>
         @import url('https://rsms.me/inter/inter.css');
 
@@ -31,10 +29,6 @@
 
 <body class="font-sans antialiased">
     @inertia
-
-    <script src="/assets/js/tabler.min.js"></script>
-
-
 </body>
 
 </html>

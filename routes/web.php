@@ -16,6 +16,8 @@ use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\ComposerController;
 use App\Http\Controllers\QuoteController;
 
+use App\Http\Controllers\UploadController;
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -99,6 +101,12 @@ Route::controller(QuoteController::class)->middleware(['auth', 'verified'])->gro
         Route::get('/quotes/view/{id}', 'viewQuote')->name('quotes.view'); // Отправная точка        
         Route::post('/quotes/create', 'createQuote')->name('quotes.create'); // Отправная точка        
         Route::post('/quotes/save_changes/{id}', 'updateQuote')->name('quotes.update'); // Отправная точка        
+    }
+);
+
+Route::controller(UploadController::class)->middleware(['auth', 'verified'])->group(
+    function () {
+        Route::post('/upload/composer_photo/{id}', 'uploadComposerPhoto')->name('uploads.composer_photo'); // Отправная точка        
     }
 );
 

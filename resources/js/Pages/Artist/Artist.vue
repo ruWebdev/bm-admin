@@ -17,12 +17,16 @@ import { ref } from 'vue';
 import ContentLayout from '@/Layouts/ContentLayout.vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 
-import DangerButton from '@/Components/DangerButton.vue';
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import translitRusEng from 'translit-rus-eng'
 
 const page = usePage()
 
 const processing = ref(false);
+
+function translitTitle() {
+    const fullName = mainInfoForm.value.last_name + ' ' + mainInfoForm.value.first_name + ' ' + mainInfoForm.value.middle_name;
+    mainInfoForm.value.page_alias = translitRusEng(fullName, { slug: true, lowerCase: true });
+}
 
 const enableTelegramNotifications = async () => {
     processing.value = true

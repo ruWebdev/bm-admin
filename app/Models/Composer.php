@@ -27,6 +27,7 @@ class Composer extends Model
         'birth_date',
         'death_date',
         'main_photo',
+        'page_photo',
         'short_description',
         'long_description',
     ];

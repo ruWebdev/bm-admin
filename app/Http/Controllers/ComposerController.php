@@ -30,6 +30,8 @@ class ComposerController extends Controller
             [
                 'last_name' => $request->data['last_name'],
                 'first_name' => $request->data['first_name'],
+                'main_photo' => 'composers/no-composer-image.jpg',
+                'page_photo' => 'composers/no-composer-image.jpg'
             ]
         );
 
