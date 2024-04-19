@@ -28,7 +28,11 @@ class UploadController extends Controller
         $destinationPath = 'composers/' . $id . '/photo/';
         $fileName = rand() . ".jpg";
 
-        $img->scale(width: 500);
+        if ($request->type == 'main_photo') {
+        $img->scale(width: 200);
+        } else {
+            $img->scale(width: 500);
+        }
 
         $finalImage = $img->toJpeg(90);
 
