@@ -32,8 +32,7 @@ const newInstrumentForm = ref({
 
 function openNewInstrumentModal() {
     newInstrumentForm.value = {
-        last_name: null,
-        first_name: null,
+        title: null,
     }
     state.newInstrumentModal.show();
 }
@@ -122,23 +121,16 @@ onMounted(async () => {
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Добавление композитора</h5>
+                        <h5 class="modal-title">Добавление музыкального инструмента</h5>
                         <button type="button" class="btn-close" @click="closenewInstrumentModal()"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label class="form-label">Фамилия (на русском)</label>
+                                    <label class="form-label">Название</label>
                                     <input type="text" class="form-control" name="example-text-input"
-                                        placeholder="Заполните поле" v-model="newInstrumentForm.last_name">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Имя (на русском)</label>
-                                    <input type="text" class="form-control" name="example-text-input"
-                                        placeholder="Заполните поле" v-model="newInstrumentForm.first_name">
+                                        placeholder="Заполните поле" v-model="newInstrumentForm.title">
                                 </div>
                             </div>
                         </div>
@@ -146,7 +138,7 @@ onMounted(async () => {
                     <div class="modal-footer">
                         <button type="button" class="btn me-auto" @click="closenewInstrumentModal()">Отменить</button>
                         <button type="button" class="btn btn-primary" @click="createNewComposer()">Создать
-                            композитора</button>
+                            музыкальный инструмент</button>
                     </div>
                 </div>
             </div>

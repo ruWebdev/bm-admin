@@ -22,15 +22,14 @@ class MusicalInstrumentController extends Controller
         return Inertia::render('Instruments/Instruments', ['data' => $data]);
     }
 
-    public function createComposer(Request $request)
+    public function createMusicalInstrument(Request $request)
     {
 
-        $newItem = Composer::create(
+        $newItem = MusicalInstrument::create(
             [
-                'last_name' => $request->data['last_name'],
-                'first_name' => $request->data['first_name'],
-                'main_photo' => 'composers/no-composer-image.jpg',
-                'page_photo' => 'composers/no-composer-image.jpg'
+                'title' => $request->data['title'],
+                'main_photo' => 'instruments/no-instrument-photo.jpg',
+                'page_photo' => 'instruments/no-instrument-photo.jpg'
             ]
         );
 
