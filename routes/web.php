@@ -13,7 +13,9 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\SponsorController;
+
 use App\Http\Controllers\ComposerController;
+use App\Http\Controllers\MusicalInstrumentController;
 use App\Http\Controllers\QuoteController;
 
 use App\Http\Controllers\UploadController;
@@ -36,13 +38,13 @@ Route::controller(DashboardController::class)->middleware(['auth', 'verified'])-
 
 Route::controller(ArtistController::class)->middleware(['auth', 'verified'])->group(
     function () {
-        Route::get('/artist', 'index')->name('artist'); // Отправная точка        
+        Route::get('/artists', 'index')->name('artists'); // Отправная точка        
     }
 );
 
 Route::controller(BandController::class)->middleware(['auth', 'verified'])->group(
     function () {
-        Route::get('/bands', 'index')->name('band'); // Отправная точка        
+        Route::get('/bands', 'index')->name('bands'); // Отправная точка        
     }
 );
 
@@ -94,6 +96,16 @@ Route::controller(ComposerController::class)->middleware(['auth', 'verified'])->
     }
 );
 
+Route::controller(MusicalInstrumentController::class)->middleware(['auth', 'verified'])->group(
+    function () {
+        Route::get('/instruments', 'index')->name('instruments'); // Отправная точка      
+
+        Route::get('/instruments/view/{id}', 'viewMusicalInstrument')->name('instruments.view'); // Отправная точка        
+        Route::post('/instruments/create', 'createMusicalInstrument')->name('instruments.create'); // Отправная точка        
+        Route::post('/instruments/save_changes/{id}', 'updateMusicalInstrument')->name('instruments.update'); // Отправная точка        
+    }
+);
+
 Route::controller(QuoteController::class)->middleware(['auth', 'verified'])->group(
     function () {
         Route::get('/quotes', 'index')->name('quotes'); // Отправная точка      
@@ -107,6 +119,7 @@ Route::controller(QuoteController::class)->middleware(['auth', 'verified'])->gro
 Route::controller(UploadController::class)->middleware(['auth', 'verified'])->group(
     function () {
         Route::post('/upload/composer_photo/{id}', 'uploadComposerPhoto')->name('uploads.composer_photo'); // Отправная точка        
+        Route::post('/upload/instrument_photo/{id}', 'uploadMusicalInstrumentPhoto')->name('uploads.instrument_photo'); // Отправная точка        
     }
 );
 

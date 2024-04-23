@@ -54,21 +54,6 @@ function dismissNotification(index) {
                     </a>
                 </h1>
                 <div class="navbar-nav flex-row order-md-last">
-                    <div class="nav-item d-none d-md-flex me-3">
-                        <div class="btn-list">
-                            <Link href="/sponsor" class="btn" target="_blank" rel="noreferrer">
-                            <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink" width="24" height="24"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                    d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-                            </svg>
-                            Помочь проекту
-                            </Link>
-                        </div>
-                    </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                             aria-label="Open user menu">
@@ -112,7 +97,7 @@ function dismissNotification(index) {
                                 </Link>
                             </li>
                             <li class="nav-item">
-                                <Link class="nav-link" href="/bands">
+                                <Link class="nav-link" href="/artists">
                                 <span
                                     class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -147,7 +132,7 @@ function dismissNotification(index) {
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    Мои коллективы
+                                    Коллективы
                                 </span>
                                 </Link>
                             </li>
@@ -256,10 +241,11 @@ function dismissNotification(index) {
                             </li>
                         </ul>
                         <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+                            <!--
                             <form action="./" method="get" autocomplete="off" novalidate>
                                 <div class="input-icon">
                                     <span class="input-icon-addon">
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                             stroke-linecap="round" stroke-linejoin="round">
@@ -272,6 +258,7 @@ function dismissNotification(index) {
                                         aria-label="Search in website">
                                 </div>
                             </form>
+                            -->
                         </div>
                     </div>
                 </div>

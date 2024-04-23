@@ -95,14 +95,14 @@ function uploadImage() {
                     'content-type': 'multipart/form-data'
                 }
             }
-            axios.post('/upload/composer_photo/' + props.data.composer.id, form, config)
+            axios.post('/upload/instrument_photo/' + props.data.instrument.id, form, config)
                 .then(response => {
                     if (imgType.value == 'main_photo') {
-                        props.data.composer.main_photo = response.data;
+                        props.data.instrument.main_photo = response.data;
                     } else if (imgType.value == 'page_photo') {
-                        props.data.composer.page_photo = response.data;
+                        props.data.instrument.page_photo = response.data;
                     } else if (imgType.value == 'additional_photo') {
-                        props.data.composer.composer_photos.push(response.data);
+                        props.data.instrument.composer_photos.push(response.data);
                     }
 
                 })
@@ -116,30 +116,22 @@ function uploadImage() {
     // closeNewPhotoModal();
 }
 
-const mainComposerForm = ref({
-    last_name: props.data.composer.last_name,
-    last_name_en: props.data.composer.last_name_en,
-    last_name_rod: props.data.composer.last_name_rod,
-    first_name: props.data.composer.first_name,
-    first_name_en: props.data.composer.first_name_en,
-    first_name_rod: props.data.composer.first_name_rod,
-    first_name_short: props.data.composer.first_name_short,
-    first_name_short_en: props.data.composer.first_name_short_en,
-    birth_date: props.data.composer.birth_date,
-    death_date: props.data.composer.death_date,
-    short_description: props.data.composer.short_description,
-    long_description: props.data.composer.long_description,
-    page_alias: props.data.composer.page_alias,
+const mainInstrumentForm = ref({
+    title: props.data.instrument.title,
+    title_rod: props.data.instrument.title_rod,
+    short_description: props.data.instrument.short_description,
+    long_description: props.data.instrument.long_description,
+    page_alias: props.data.instrument.page_alias,
 })
 
 function makePageAlias() {
-    const fullName = mainComposerForm.value.last_name_en + ' ' + mainComposerForm.value.first_name_en;
-    mainComposerForm.value.page_alias = translitRusEng(fullName, { slug: true, lowerCase: true });
+    const fullName = mainInstrumentForm.value.title;
+    mainInstrumentForm.value.page_alias = translitRusEng(fullName, { slug: true, lowerCase: true });
 }
 
 async function saveChanges() {
     try {
-        await axios.post('/composers/save_changes/' + props.data.composer.id, mainComposerForm.value)
+        await axios.post('/instruments/save_changes/' + props.data.instrument.id, mainInstrumentForm.value)
         toast.success("Изменения успешно сохранены");
     } catch (e) {
 
@@ -160,8 +152,8 @@ onMounted(async () => {
 
         <template #BreadCrumbs>
             <Link class="text-primary" href="/">Главная страница</Link> /
-            <Link class="text-primary" href="/composers">Композиторы</Link> /
-            {{ mainComposerForm.first_name }} {{ mainComposerForm.last_name }}
+            <Link class="text-primary" href="/instruments">Музыкальные инструменты</Link> /
+            {{ mainInstrumentForm.title }}
         </template>
 
         <template #PageTitle>
@@ -201,81 +193,20 @@ onMounted(async () => {
                         <div class="tab-content">
                             <div class="tab-pane active show" id="tabs-home-1">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Фамилия (на русском)</label>
+                                            <label class="form-label">Название</label>
                                             <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainComposerForm.last_name"
+                                                placeholder="Не заполнено" v-model="mainInstrumentForm.title"
                                                 @keyup="makePageAlias()">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Имя (на русском)</label>
-                                            <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainComposerForm.first_name"
-                                                @keyup="makePageAlias()">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Имя (на русском, сокращенно)</label>
-                                            <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainComposerForm.first_name_short">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Фамилия (на английском)</label>
-                                            <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainComposerForm.last_name_en"
-                                                @keyup="makePageAlias()">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Имя (на английском)</label>
-                                            <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainComposerForm.first_name_en"
-                                                @keyup="makePageAlias()">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Имя (на русском, сокращенно)</label>
-                                            <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainComposerForm.first_name_short">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Фамилия (на русском, родительный падеж -
-                                                кого/чего)</label>
-                                            <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainComposerForm.last_name_rod"
-                                                @keyup="makePageAlias()">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Имя (на русском, родительный падеж -
-                                                кого/чего)</label>
-                                            <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainComposerForm.first_name_rod">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Дата рождения</label>
+                                            <label class="form-label">Название (родительный падеж - кого/чего)</label>
                                             <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainComposerForm.birth_date">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Дата смерти</label>
-                                            <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainComposerForm.death_date">
+                                                placeholder="Не заполнено" v-model="mainInstrumentForm.title_rod"
+                                                @keyup="makePageAlias()">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -283,13 +214,13 @@ onMounted(async () => {
                                             <label class="form-label">Краткое описание</label>
                                             <input type="text" class="form-control" name="example-text-input"
                                                 placeholder="Не заполнено" maxlength="100"
-                                                v-model="mainComposerForm.short_description">
+                                                v-model="mainInstrumentForm.short_description">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Подробная биография</label>
-                                            <ckeditor :editor="editor" v-model="mainComposerForm.long_description"
+                                            <ckeditor :editor="editor" v-model="mainInstrumentForm.long_description"
                                                 :config="editorConfig">
                                             </ckeditor>
 
@@ -300,10 +231,10 @@ onMounted(async () => {
                                             <label class="form-label">Адрес страницы на сайте</label>
                                             <div class="input-group mb-2">
                                                 <span class="input-group-text">
-                                                    https://baroquemusic.ru/composers/
+                                                    https://baroquemusic.ru/instruments/
                                                 </span>
                                                 <input type="text" class="form-control" placeholder="Не заполнено"
-                                                    autocomplete="off" v-model="mainComposerForm.page_alias"
+                                                    autocomplete="off" v-model="mainInstrumentForm.page_alias"
                                                     disabled="disabled">
                                             </div>
                                         </div>
@@ -315,7 +246,8 @@ onMounted(async () => {
                                     <div class="col-md-4">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h3 class="card-title">Изображение в каталоге композиторов</h3>
+                                                <h3 class="card-title">Изображение в каталоге музыкальных инструментов
+                                                </h3>
                                                 <div class="card-actions">
                                                     <button @click="openPhotoModal('main_photo')"
                                                         class="btn btn-primary">
@@ -335,7 +267,7 @@ onMounted(async () => {
                                             <div class="card-body p-0 text-center">
 
                                                 <img style="width: 240px;" class="p-2"
-                                                    :src="'https://baroquemusic.ru/storage/' + props.data.composer.main_photo">
+                                                    :src="'https://baroquemusic.ru/storage/' + props.data.instrument.main_photo">
 
                                             </div>
                                         </div>
@@ -343,7 +275,7 @@ onMounted(async () => {
                                     <div class="col-md-4">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h3 class="card-title">Изображение на странице композитора</h3>
+                                                <h3 class="card-title">Изображение на странице инструмента</h3>
                                                 <div class="card-actions">
                                                     <button @click="openPhotoModal('page_photo')"
                                                         class="btn btn-primary">
@@ -363,7 +295,7 @@ onMounted(async () => {
                                             <div class="card-body p-0 text-center">
 
                                                 <img style="width: 240px;" class="p-2"
-                                                    :src="'https://baroquemusic.ru/storage/' + props.data.composer.page_photo">
+                                                    :src="'https://baroquemusic.ru/storage/' + props.data.instrument.page_photo">
 
                                             </div>
                                         </div>

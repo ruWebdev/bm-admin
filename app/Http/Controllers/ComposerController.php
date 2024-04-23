@@ -54,8 +54,10 @@ class ComposerController extends Controller
 
         $composer->last_name = $request->last_name;
         $composer->last_name_en = $request->last_name_en;
+        $composer->last_name_rod = $request->last_name_rod;
         $composer->first_name = $request->first_name;
         $composer->first_name_en = $request->first_name_en;
+        $composer->first_name_rod = $request->first_name_rod;
         $composer->first_name_short = $request->first_name_short;
         $composer->first_name_short_en = $request->first_name_short_en;
         $composer->birth_date = $request->birth_date;

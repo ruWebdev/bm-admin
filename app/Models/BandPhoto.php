@@ -6,26 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class News extends Model
+class BandPhoto extends Model
 {
     use HasUuids, HasFactory;
 
-    protected $table = 'news';
+    protected $table = 'band_photos';
     protected $primaryKey = 'id';
 
     public $incrementing = false;
     public $timestamps = true;
 
     protected $fillable = [
-        'page_alias',
-        'title',
-        'short_description',
-        'long_description',
-        'main_photo',
-        'moderation_status',
-        'enabled',
-        'archived',
-        'user_id',
-        'page_views',
+        'file_name',
+        'full_path',
+        'band_id',       
     ];
 }

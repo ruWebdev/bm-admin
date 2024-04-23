@@ -63,12 +63,12 @@ onMounted(async () => {
 
 <template>
 
-    <Head title="Коллективы" />
+    <Head title="Исполнители" />
 
     <ContentLayout>
 
         <template #PageTitle>
-            Коллективы
+            Исполнители
         </template>
 
         <template #RightButtons>
@@ -79,14 +79,14 @@ onMounted(async () => {
                     <path d="M12 5l0 14" />
                     <path d="M5 12l14 0" />
                 </svg>
-                Добавить коллектив
+                Добавить исполнителя
             </a>
         </template>
         <div class="row row-cards">
             <div class="col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Список страниц коллективов, нуждающихся в модерации</h3>
+                        <h3 class="card-title">Список страниц исполнителей, нуждающихся в модерации</h3>
                     </div>
                     <div class="card-body p-0 m-0">
                         <div class="table-responsive">
@@ -102,34 +102,34 @@ onMounted(async () => {
                                 </thead>
                                 <tbody>
                                     <tr v-for="artist in props.data.artist_moderation">
-                                        <td>{{ band.first_name }} {{ band.last_name }}</td>
+                                        <td>{{ artist.first_name }} {{ artist.last_name }}</td>
                                         <td>
-                                            <template v-if="band.user_id == null"><span
+                                            <template v-if="artist.user_id == null"><span
                                                     class="badge bg-red-lt">Нет</span></template>
                                             <template v-else><span class="badge bg-green-lt">Да</span></template>
                                         </td>
                                         <td>
-                                            <template v-if="band.enable_page == 0"><span
+                                            <template v-if="artist.enable_page == 0"><span
                                                     class="badge bg-red-lt">Страница
                                                     не
                                                     показываеся</span></template>
-                                            <template v-if="band.enable_page == 1"><span
+                                            <template v-if="artist.enable_page == 1"><span
                                                     class="badge bg-azure-lt">Страница
                                                     показываеся</span></template>
                                         </td>
                                         <td class="text-muted">
-                                            <template v-if="band.moderation_status == 0"><span
+                                            <template v-if="artist.moderation_status == 0"><span
                                                     class="badge bg-cyan-lt">Добавлено</span></template>
-                                            <template v-if="band.moderation_status == 1"><span
+                                            <template v-if="artist.moderation_status == 1"><span
                                                     class="badge bg-orange-lt">Запрос на
                                                     модерацию</span></template>
-                                            <template v-if="band.moderation_status == 2"><span
+                                            <template v-if="artist.moderation_status == 2"><span
                                                     class="badge bg-red-lt">Отклонено</span></template>
-                                            <template v-if="band.moderation_status == 3"><span
+                                            <template v-if="artist.moderation_status == 3"><span
                                                     class="badge bg-green-lt">Модерация пройдена</span></template>
                                         </td>
                                         <td>
-                                            <Link :href="'/artists/view/' + band.id">Просмотр</Link>
+                                            <Link :href="'/artists/view/' + artist.id">Просмотр</Link>
                                         </td>
                                     </tr>
 
@@ -143,7 +143,7 @@ onMounted(async () => {
             <div class="col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Список одобренных страниц коллективов или только что созданных страниц
+                        <h3 class="card-title">Список одобренных страниц исполнителей или только что созданных страниц
                         </h3>
                     </div>
                     <div class="card-body p-0 m-0">
@@ -151,7 +151,7 @@ onMounted(async () => {
                             <table class="table table-vcenter card-table">
                                 <thead>
                                     <tr>
-                                        <th>Название</th>
+                                        <th>Имя, Фамилия</th>
                                         <th>Подтвержденный пользователь</th>
                                         <th>Статус</th>
                                         <th>Модерация</th>
@@ -159,35 +159,35 @@ onMounted(async () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="band in props.data.bands">
-                                        <td>{{ band.title }}</td>
+                                    <tr v-for="artist in props.data.artists">
+                                        <td>{{ artist.first_name }} {{ artist.last_name }}</td>
                                         <td>
-                                            <template v-if="band.user_id == null"><span
+                                            <template v-if="artist.user_id == null"><span
                                                     class="badge bg-red-lt">Нет</span></template>
                                             <template v-else><span class="badge bg-green-lt">Да</span></template>
                                         </td>
                                         <td>
-                                            <template v-if="band.enable_page == 0"><span
+                                            <template v-if="artist.enable_page == 0"><span
                                                     class="badge bg-red-lt">Страница
                                                     не
                                                     показываеся</span></template>
-                                            <template v-if="band.enable_page == 1"><span
+                                            <template v-if="artist.enable_page == 1"><span
                                                     class="badge bg-azure-lt">Страница
                                                     показываеся</span></template>
                                         </td>
                                         <td class="text-muted">
-                                            <template v-if="band.moderation_status == 0"><span
+                                            <template v-if="artist.moderation_status == 0"><span
                                                     class="badge bg-cyan-lt">Добавлено</span></template>
-                                            <template v-if="band.moderation_status == 1"><span
+                                            <template v-if="artist.moderation_status == 1"><span
                                                     class="badge bg-orange-lt">Запрос на
                                                     модерацию</span></template>
-                                            <template v-if="band.moderation_status == 2"><span
+                                            <template v-if="artist.moderation_status == 2"><span
                                                     class="badge bg-red-lt">Отклонено</span></template>
-                                            <template v-if="band.moderation_status == 3"><span
+                                            <template v-if="artist.moderation_status == 3"><span
                                                     class="badge bg-green-lt">Модерация пройдена</span></template>
                                         </td>
                                         <td>
-                                            <Link :href="'/artists/view/' + band.id">Просмотр</Link>
+                                            <Link :href="'/artists/view/' + artist.id">Просмотр</Link>
                                         </td>
                                     </tr>
 
