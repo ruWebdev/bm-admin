@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
 
+use App\Models\Artist;
+use App\Models\ArtistPhoto;
+
 use App\Models\Composer;
 use App\Models\ComposerPhoto;
 
@@ -17,6 +20,60 @@ use App\Models\MusicalInstrumentPhoto;
 
 class UploadController extends Controller
 {
+
+    public function uploadArtistPhoto($id, Request $request)
+    {
+
+        $manager = new ImageManager(new Driver());
+
+        $file = $request->file('file');
+        $img = $manager->read($file->path());
+
+        $destinationPath = 'artists/' . $id . '/photo/';
+        $fileName = rand() . ".jpg";
+
+        if ($request->type == 'main_photo') {
+            $img->scale(width: 200);
+        } else {
+            $img->scale(width: 500);
+        }
+
+        $finalImage = $img->toJpeg(90);
+
+        $path = Storage::disk('public')->put($destinationPath . $fileName, $finalImage);
+
+        $artist = Artist::find($id);
+
+        if ($request->type == 'main_photo') {
+
+            if ($artist->main_photo != '' && $artist->main_photo != 'artists/no-artist-photo.jpg') {
+                Storage::disk('public')->delete($artist->main_photo);
+            }
+
+            $artist->main_photo = $destinationPath . $fileName;
+            $result = $destinationPath . $fileName;
+
+            $artist->save();
+        } else if ($request->type == 'page_photo') {
+
+            if ($artist->page_photo != '' && $artist->page_photo != 'artists/no-artist-photo.jpg') {
+                Storage::disk('public')->delete($artist->page_photo);
+            }
+
+            $artist->page_photo = $destinationPath . $fileName;
+            $result = $destinationPath . $fileName;
+
+            $artist->save();
+        } else if ($request->type == 'additional_photo') {
+            $result = ArtistPhoto::create([
+                'composer_id' => $id,
+                'file_name' => $fileName,
+                'full_path' => $destinationPath . $fileName
+            ]);
+        }
+
+        return response()->json($result);
+    }
 
     public function uploadComposerPhoto($id, Request $request)
     {

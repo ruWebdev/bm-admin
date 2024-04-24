@@ -59,4 +59,24 @@ class MusicalInstrumentController extends Controller
 
         $composer->save();
     }
+
+    public function getAllInstruments(Request $request)
+    {
+
+
+        $instruments = MusicalInstrument::orderBy('title', 'ASC')
+            ->get();
+
+        return response()->json($instruments);
+    }
+
+    public function createInstrumentFromSelect(Request $request)
+    {
+
+        $instrument = MusicalInstrument::create([
+            'title' => $request->title
+        ]);
+
+        return response()->json($instrument);
+    }
 }

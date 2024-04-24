@@ -31,5 +31,13 @@ class Artist extends Model
         'show_birth_date',
         'moderation_status',
         'enable_page',
+        'main_photo',
+        'page_photo'
+    ];
+
+    protected $casts = [
+        'show_birth_place' => 'boolean',
+        'show_birth_date' => 'boolean',
+        'enable_page' => 'boolean',
     ];
 }

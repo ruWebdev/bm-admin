@@ -25,9 +25,11 @@ class Band extends Model
         'main_photo',
         'short_description',
         'long_description',
-        'enable',
+        'enable_page',
         'moderation_status',
-        'allowed', 
-        'status',       
+    ];
+
+    protected $casts = [
+        'enable_page' => 'boolean',
     ];
 }

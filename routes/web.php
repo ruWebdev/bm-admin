@@ -38,7 +38,14 @@ Route::controller(DashboardController::class)->middleware(['auth', 'verified'])-
 
 Route::controller(ArtistController::class)->middleware(['auth', 'verified'])->group(
     function () {
-        Route::get('/artists', 'index')->name('artists'); // Отправная точка        
+        Route::get('/artists', 'index')->name('artists'); // Отправная точка       
+
+        Route::get('/artists/view/{id}', 'viewArtist')->name('artists.view'); // Отправная точка       
+        Route::post('/artists/save_changes/{id}', 'updateArtist')->name('artist.update'); // Отправная точка  
+
+        Route::post('/artist/accept_moderation/{id}', 'acceptModeration')->name('artist.accept_moderation'); // Отправная точка 
+        Route::post('/artist/deny_moderation/{id}', 'denyModeration')->name('artist.deny_moderation'); // Отправная точка 
+
     }
 );
 
@@ -102,7 +109,10 @@ Route::controller(MusicalInstrumentController::class)->middleware(['auth', 'veri
 
         Route::get('/instruments/view/{id}', 'viewMusicalInstrument')->name('instruments.view'); // Отправная точка        
         Route::post('/instruments/create', 'createMusicalInstrument')->name('instruments.create'); // Отправная точка        
-        Route::post('/instruments/save_changes/{id}', 'updateMusicalInstrument')->name('instruments.update'); // Отправная точка        
+        Route::post('/instruments/save_changes/{id}', 'updateMusicalInstrument')->name('instruments.update'); // Отправная точка  
+
+        Route::post('/musical_instruments/get_all', 'getAllInstruments')->name('musical_instruments.get_all'); // Отправная точка        
+        Route::post('/musical_instruments/create_from_select', 'createInstrumentFromSelect')->name('musical_instruments.get_all');
     }
 );
 
@@ -119,7 +129,22 @@ Route::controller(QuoteController::class)->middleware(['auth', 'verified'])->gro
 Route::controller(UploadController::class)->middleware(['auth', 'verified'])->group(
     function () {
         Route::post('/upload/composer_photo/{id}', 'uploadComposerPhoto')->name('uploads.composer_photo'); // Отправная точка        
-        Route::post('/upload/instrument_photo/{id}', 'uploadMusicalInstrumentPhoto')->name('uploads.instrument_photo'); // Отправная точка        
+        Route::post('/upload/instrument_photo/{id}', 'uploadMusicalInstrumentPhoto')->name('uploads.instrument_photo'); // Отправная точка  
+
+        Route::post('/upload/artist_photo/{id}', 'uploadArtistPhoto')->name('uploads.artist_photo');
+        Route::post('/upload/artist_photo/{id}/delete', 'deleteArtistPhoto')->name('uploads.delete_artist_photo'); // Отправная точка        
+
+        Route::post('/upload/band_photo/{id}', 'uploadBandPhoto')->name('uploads.band_photo'); // Отправная точка        
+        Route::post('/upload/band_photo/{id}/delete', 'deleteBandPhoto')->name('uploads.delete_band_photo'); // Отправная точка  
+
+        Route::post('/upload/event_photo/{id}', 'uploadEventPhoto')->name('uploads.event_photo');
+        Route::post('/upload/event_photo/{id}/delete', 'deleteEventPhoto')->name('uploads.delete_event_photo'); // Отправная точка        
+
+        Route::post('/upload/news_photo/{id}', 'uploadNewsPhoto')->name('uploads.news_photo');
+        Route::post('/upload/news_photo/{id}/delete', 'deleteNewsPhoto')->name('uploads.delete_news_photo'); // Отправная точка        
+
+        Route::post('/upload/publication_photo/{id}', 'uploadPublicationPhoto')->name('uploads.publication_photo');
+        Route::post('/upload/publication_photo/{id}/delete', 'deletePublicationPhoto')->name('uploads.delete_publication_photo');
     }
 );
 

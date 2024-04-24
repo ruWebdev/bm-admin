@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+use App\Mail\ArtistModerationDeny;
+use Illuminate\Support\Facades\Mail;
+
 use App\Models\User;
 use App\Models\Artist;
 use App\Models\MusicalInstrument;
@@ -18,12 +21,12 @@ class ArtistController extends Controller
         $data = array();
 
         $data['artist_moderation'] = Artist::where('moderation_status', 1)
-            ->whereOr('moderation_status', 2)
+            ->orWhere('moderation_status', 2)
             ->orderBy('updated_at', 'DESC')
             ->get();
 
-        $data['artist'] = Artist::where('moderation_status', 0)
-            ->whereOr('moderation_status', 4)
+        $data['artists'] = Artist::where('moderation_status', 0)
+            ->orWhere('moderation_status', 3)
             ->orderBy('updated_at', 'DESC')
             ->get();
 
@@ -70,6 +73,16 @@ class ArtistController extends Controller
         return response('success');
     }
 
+    public function viewArtist($id)
+    {
+
+        $data = array();
+
+        $data['artist'] = Artist::find($id);
+
+        return Inertia::render('Artists/ViewArtist', ['data' => $data]);
+    }
+
 
     public function updateArtist($id, Request $request)
     {
@@ -87,7 +100,7 @@ class ArtistController extends Controller
         $artist->long_description = $request->long_description;
         $artist->show_birth_place = $request->show_birth_place;
         $artist->show_birth_date = $request->show_birth_date;
-        $artist->enable = $request->enable;
+        $artist->enable_page = $request->enable_page;
 
         $artist->save();
     }
@@ -101,5 +114,24 @@ class ArtistController extends Controller
             ->get();
 
         return response()->json($artists);
+    }
+
+    public function acceptModeration($id)
+    {
+        $artist = Artist::find($id);
+        $artist->moderation_status = 3;
+        $artist->save();
+
+        $user = User::find($artist->user_id);
+
+
+        Mail::to($user->email)->send(new ArtistModerationDeny());
+    }
+
+    public function denyModeration($id)
+    {
+        $artist = Artist::find($id);
+        $artist->moderation_status = 2;
+        $artist->save();
     }
 }
