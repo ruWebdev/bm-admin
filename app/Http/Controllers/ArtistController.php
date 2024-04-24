@@ -125,7 +125,7 @@ class ArtistController extends Controller
         $user = User::find($artist->user_id);
 
 
-        Mail::mailer('smtp')->to($user->email)->send(new ArtistModerationDeny());
+        Mail::mailer('smtp')->to($user)->send(new ArtistModerationDeny());
     }
 
     public function denyModeration($id)
