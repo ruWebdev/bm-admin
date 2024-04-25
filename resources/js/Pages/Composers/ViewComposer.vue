@@ -242,9 +242,10 @@ onMounted(async () => {
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label class="form-label">Имя (на русском, сокращенно)</label>
+                                            <label class="form-label">Имя (на английском, сокращенно)</label>
                                             <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainComposerForm.first_name_short">
+                                                placeholder="Не заполнено"
+                                                v-model="mainComposerForm.first_name_short_en">
                                         </div>
                                     </div>
                                     <div class="col-md-4">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+use App\Mail\ArtistModerationAccept;
 use App\Mail\ArtistModerationDeny;
 use Illuminate\Support\Facades\Mail;
 
@@ -124,8 +125,7 @@ class ArtistController extends Controller
 
         $user = User::find($artist->user_id);
 
-
-        Mail::mailer('smtp')->to($user)->send(new ArtistModerationDeny());
+        Mail::to($user->email)->send(new ArtistModerationAccept());
     }
 
     public function denyModeration($id)
@@ -133,5 +133,9 @@ class ArtistController extends Controller
         $artist = Artist::find($id);
         $artist->moderation_status = 2;
         $artist->save();
+
+        $user = User::find($artist->user_id);
+
+        Mail::to($user->email)->send(new ArtistModerationDeny());
     }
 }
