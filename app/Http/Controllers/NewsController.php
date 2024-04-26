@@ -43,8 +43,24 @@ class NewsController extends Controller
     public function viewItem($id)
     {
 
-        $data = array();
 
-        return Inertia::render('Events/ViewEvent', ['data' => $data]);
+        $data['news'] = News::find($id);
+
+        return Inertia::render('News/ViewNews', ['data' => $data]);
+    }
+
+    public function updateNews($id, Request $request)
+    {
+
+        $news = News::find($id);
+
+        $news->page_alias = $request->page_alias;
+        $news->title = $request->title;
+        $news->short_description = $request->short_description;
+        $news->long_description = $request->long_description;
+        $news->external_page = $request->external_page;
+        $news->enable_page = $request->enable_page;
+
+        $news->save();
     }
 }

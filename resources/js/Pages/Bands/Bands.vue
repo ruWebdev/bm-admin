@@ -101,8 +101,8 @@ onMounted(async () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="artist in props.data.artist_moderation">
-                                        <td>{{ band.first_name }} {{ band.last_name }}</td>
+                                    <tr v-for="band in props.data.band_moderation">
+                                        <td>{{ band.title }}</td>
                                         <td>
                                             <template v-if="band.user_id == null"><span
                                                     class="badge bg-red-lt">Нет</span></template>

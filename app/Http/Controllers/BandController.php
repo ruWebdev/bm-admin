@@ -20,12 +20,12 @@ class BandController extends Controller
         $data = array();
 
         $data['band_moderation'] = Band::where('moderation_status', 1)
-            ->whereOr('moderation_status', 2)
+            ->orWhere('moderation_status', 2)
             ->orderBy('updated_at', 'DESC')
             ->get();
 
         $data['bands'] = Band::where('moderation_status', 0)
-            ->whereOr('moderation_status', 4)
+            ->orWhere('moderation_status', 4)
             ->orderBy('updated_at', 'DESC')
             ->get();
 

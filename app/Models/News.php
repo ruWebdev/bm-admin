@@ -22,9 +22,10 @@ class News extends Model
         'short_description',
         'long_description',
         'main_photo',
+        'page_photo',
         'moderation_status',
-        'enabled',
-        'archived',
+        'enable_page',
+        'external_link',
         'user_id',
         'page_views',
     ];

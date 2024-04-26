@@ -69,8 +69,10 @@ Route::controller(NewsController::class)->middleware(['auth', 'verified'])->grou
     function () {
         Route::get('/news', 'index')->name('news'); // Отправная точка      
 
-        Route::get('/news/view', 'viewItem')->name('news.view'); // Отправная точка        
-        Route::post('/news/create', 'createItem')->name('news.create'); // Отправная точка        
+        Route::get('/news/view/{id}', 'viewItem')->name('news.view'); // Отправная точка        
+        Route::post('/news/create', 'createItem')->name('news.create'); // Отправная точка     
+
+        Route::post('/news/save_changes/{id}', 'updateNews')->name('news.update'); // Отправная точка        
     }
 );
 
