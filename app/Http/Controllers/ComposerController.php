@@ -23,6 +23,16 @@ class ComposerController extends Controller
         return Inertia::render('Composers/Composers', ['data' => $data]);
     }
 
+    public function getAllComposers(Request $request)
+    {
+
+        $composers = Composer::orderBy('last_name', 'ASC')
+            ->orderBy('first_name', 'ASC')
+            ->get();
+
+        return response()->json($composers);
+    }
+
     public function createComposer(Request $request)
     {
 
@@ -36,6 +46,21 @@ class ComposerController extends Controller
         );
 
         return response()->json($newItem);
+    }
+
+    public function createComposerFromSelect(Request $request)
+    {
+
+        $name = explode(',', $request->full_name);
+
+        $instrument = Composer::create([
+            'last_name' => trim($name[0]),
+            'first_name' => trim($name[1]),
+            'main_photo' => 'composers/no-composer-image.jpg',
+            'page_photo' => 'composers/no-composer-image.jpg'
+        ]);
+
+        return response()->json($instrument);
     }
 
     public function viewComposer($id)

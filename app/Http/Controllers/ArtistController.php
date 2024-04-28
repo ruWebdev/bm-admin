@@ -34,6 +34,18 @@ class ArtistController extends Controller
         return Inertia::render('Artists/Artists', ['data' => $data]);
     }
 
+    public function getAllArtists(Request $request)
+    {
+
+        $artists = Artist::orderBy('last_name', 'ASC')
+            ->orderBy('first_name', 'ASC')
+            ->where('last_name', '!=', null)
+            ->where('first_name', '!=', null)
+            ->get();
+
+        return response()->json($artists);
+    }
+
     public function createArtist(Request $request)
     {
 
@@ -48,6 +60,21 @@ class ArtistController extends Controller
         $user->save();
 
         return response('success');
+    }
+
+    public function createArtistFromSelect(Request $request)
+    {
+
+        $name = explode(',', $request->full_name);
+
+        $artist = Artist::create([
+            'last_name' => trim($name[0]),
+            'first_name' => trim($name[1]),
+            'main_photo' => 'artists/no-artist-image.jpg',
+            'page_photo' => 'artists/no-artist-image.jpg'
+        ]);
+
+        return response()->json($artist);
     }
 
     public function requestModeration($id)

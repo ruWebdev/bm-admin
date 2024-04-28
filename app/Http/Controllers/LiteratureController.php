@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-use App\Models\Publication;
+use App\Models\Literature;
 
-class PublicationController extends Controller
+class LiteratureController extends Controller
 {
 
     public function index(Request $request)

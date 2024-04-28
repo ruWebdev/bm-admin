@@ -6,7 +6,15 @@ use Inertia\Inertia;
 
 use Illuminate\Http\Request;
 
+use App\Models\Composer;
+
+use App\Models\Artist;
+use App\Models\Band;
+
 use App\Models\Event;
+use App\Models\EventProgram;
+use App\Models\EventParticipant;
+use App\Models\EventPhoto;
 
 
 class EventController extends Controller
@@ -32,9 +40,12 @@ class EventController extends Controller
         $newEvent = Event::create(
             [
                 'user_id' => auth()->user()->id,
-                'title' => $request->data['title'],
+                'title' => $request->title,
+                'event_type' => $request->event_type,
                 'age_restrictons' => '0+',
-                'enable' => 0,
+                'main_photo' => 'events/no-event-image.jpg',
+                'page_photo' => 'events/no-event-image.jpg',
+                'enable_page' => 0,
                 'archive' => 0,
                 'moderation_status' => 0,
                 'status' => 0,
@@ -49,7 +60,26 @@ class EventController extends Controller
 
         $data = array();
 
-        $data['event'] = Event::find($id);
+        $data['event'] = Event::where('id', $id)
+            ->with([
+                'program' => function ($q) {
+                    $q
+                        ->leftJoin('composers', 'composers.id', '=', 'event_programs.composer_id')
+                        ->select('event_programs.*', 'composers.last_name AS last_name', 'composers.first_name AS first_name')
+                        ->orderBy('composers.last_name', 'ASC');
+                }
+            ])
+            ->with([
+                'participants' => function ($q) {
+                    $q
+                        ->leftJoin('artists', 'artists.id', '=', 'event_participants.artist_id')
+                        ->leftJoin('bands', 'bands.id', '=', 'event_participants.band_id')
+                        ->select('event_participants.*', 'artists.last_name AS last_name', 'artists.first_name AS first_name', 'bands.title AS title')
+                        ->orderBy('artists.last_name', 'ASC')
+                        ->orderBy('bands.title', 'ASC');
+                }
+            ])
+            ->first();
 
         return Inertia::render('Events/ViewEvent', ['data' => $data]);
     }
@@ -69,7 +99,80 @@ class EventController extends Controller
         $event->place = $request->place;
         $event->page_alias = $request->page_alias;
         $event->external_link = $request->external_link;
+        $event->enable_page = $request->enable_page;
+        $event->sold_out = $request->sold_out;
 
+        $event->save();
+    }
+
+    public function addEventProgram($id, Request $request)
+    {
+        $newEventProgram = EventProgram::create(
+            [
+                'composer_id' => $request->composer,
+                'title' => $request->title,
+                'event_id' => $id
+            ]
+        );
+
+        $composer = Composer::find($request->composer);
+
+        $newEventProgram->last_name = $composer->last_name;
+        $newEventProgram->first_name = $composer->first_name;
+
+        return response()->json($newEventProgram);
+    }
+
+    public function deleteEventProgram(Request $request)
+    {
+        if ($request->id) {
+            EventProgram::where('id', $request->id)->delete();
+        }
+    }
+
+    public function addEventParticipant($id, Request $request)
+    {
+
+        $data = array(
+            'event_id' => $id,
+            'type' => $request->type,
+            'sorting' => 99
+        );
+
+        if ($request->type == 1) {
+            $data['artist_id'] = $request->value;
+            $artist = Artist::find($request->value);
+            $title = $artist->first_name . ' ' . $artist->last_name;
+        } else if ($request->type == 2) {
+            $data['band_id'] = $request->value;
+            $band = Band::find($request->value);
+            $title = $band->title;
+        }
+
+        $newEventParticipant = EventParticipant::create($data);
+
+        if ($request->type == 1) {
+            $newEventParticipant->last_name = $artist->last_name;
+            $newEventParticipant->first_name = $artist->first_name;
+        } else if ($request->type == 2) {
+            $newEventParticipant->title = $title;
+        }
+
+
+        return response()->json($newEventParticipant);
+    }
+
+    public function deleteEventParticipant(Request $request)
+    {
+        if ($request->id) {
+            EventParticipant::where('id', $request->id)->delete();
+        }
+    }
+
+    public function requestModeration($id)
+    {
+        $event = Event::find($id);
+        $event->moderation_status = 1;
         $event->save();
     }
 }

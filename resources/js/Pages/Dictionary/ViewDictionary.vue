@@ -17,8 +17,6 @@ import ContentLayout from '@/Layouts/ContentLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
 import Media from './Partials/Media.vue';
-import Program from './Partials/Program.vue';
-import Participants from './Partials/Participants.vue';
 
 import translitRusEng from 'translit-rus-eng'
 
@@ -29,23 +27,16 @@ const toast = useToast();
 const props = defineProps(['data']);
 
 const mainInfoForm = ref({
-    title: props.data.event.title,
-    age_restrictions: props.data.event.age_restrictions,
-    short_description: props.data.event.short_description,
-    long_description: props.data.event.long_description,
-    event_date: props.data.event.event_date,
-    event_time: props.data.event.event_time,
-    ticket_price_from: props.data.event.ticket_price_from,
-    ticket_price_to: props.data.event.ticket_price_to,
-    place: props.data.event.place,
-    page_alias: props.data.event.page_alias,
-    external_link: props.data.event.external_link,
-    enable_page: props.data.event.enable_page,
-    sold_out: props.data.event.sold_out,
+    page_alias: props.data.dictionary.page_alias,
+    title: props.data.dictionary.title,
+    short_description: props.data.dictionary.short_description,
+    long_description: props.data.dictionary.long_description,
+    external_link: props.data.dictionary.external_link,
+    enable_page: props.data.dictionary.enable_page,
 })
 
 function translitTitle() {
-    mainInfoForm.value.page_alias = translitRusEng(mainInfoForm.value.title + ' ' + mainInfoForm.value.event_date, { slug: true, lowerCase: true });
+    mainInfoForm.value.page_alias = translitRusEng(mainInfoForm.value.title, { slug: true, lowerCase: true });
 }
 
 function checkboxToggle(field) {
@@ -55,7 +46,7 @@ function checkboxToggle(field) {
 async function saveChanges() {
     try {
         translitTitle();
-        await axios.post('/events/save_changes/' + props.data.event.id, mainInfoForm.value)
+        await axios.post('/dictionary/save_changes/' + props.data.dictionary.id, mainInfoForm.value)
         toast.success("Изменения успешно сохранены");
     } catch (e) {
 
@@ -65,12 +56,8 @@ async function saveChanges() {
 async function checkForModeration() {
     if (
         mainInfoForm.value.title &&
-        mainInfoForm.value.age_restrictions &&
         mainInfoForm.value.short_description &&
-        mainInfoForm.value.long_description &&
-        mainInfoForm.value.event_date &&
-        mainInfoForm.value.event_time &&
-        mainInfoForm.value.ticket_price_from
+        mainInfoForm.value.long_description
     ) {
         sendToModeration();
     } else {
@@ -80,8 +67,8 @@ async function checkForModeration() {
 
 async function sendToModeration() {
     try {
-        await axios.post('/event/request_moderation/' + props.data.event.id)
-        props.data.event.moderation_status = 1;
+        await axios.post('/event/request_moderation/' + props.data.dictionary.id)
+        props.data.dictionary.moderation_status = 1;
         toast.success("Страница отправлена на модерацию");
     } catch (e) {
         toast.warning("Ой, что-то пошло не так... Скоро исправимся!");
@@ -92,16 +79,22 @@ async function sendToModeration() {
 
 <template>
 
-    <Head title="Редактирование события" />
+    <Head title="Редактирование музыкального термина" />
 
     <ContentLayout>
 
+        <template #BreadCrumbs>
+            <Link class="text-primary" href="/">Главная страница</Link> /
+            <Link class="text-primary" href="/dictionary">Словарь музыкальных терминов</Link> /
+            Редактирование
+        </template>
+
         <template #PageTitle>
-            Редактирование события
+            Редактирование музыкального термина
         </template>
 
         <template #RightButtons>
-            <button :disabled="props.data.event.moderation_status == 1" class="btn btn-success me-2"
+            <button :disabled="props.data.dictionary.moderation_status == 1" class="btn btn-success me-2"
                 @click="saveChanges()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -113,7 +106,7 @@ async function sendToModeration() {
                 </svg>
                 Сохранить изменения
             </button>
-            <button :disabled="props.data.event.moderation_status == 1" class="btn btn-info"
+            <button :disabled="props.data.dictionary.moderation_status == 1" class="btn btn-info"
                 @click="checkForModeration()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -130,17 +123,17 @@ async function sendToModeration() {
 
             <div class="col-md-12 col-lg-12">
                 <p class="alert text-danger"
-                    v-if="props.data.event.enable_page == 0 && props.data.event.moderation_status == 0">
+                    v-if="props.data.dictionary.enable_page == 0 && props.data.dictionary.moderation_status == 0">
                     <b>Событие не показывается на сайте.</b><br />Для включения страницы вам
                     необходимо заполнить все необходимые поля (*) и отправить анкету на модерацию.
                 </p>
                 <p class="alert text-info"
-                    v-if="props.data.event.enable_page == 0 && props.data.event.moderation_status == 1">
+                    v-if="props.data.dictionary.enable_page == 0 && props.data.dictionary.moderation_status == 1">
                     <b>Событие отправлена на модерацию.</b><br />Мы отправим вам письмо как только модерация будет
                     пройдена. Тогда вы сможете включить страницу на сайте и менять данные в анкете.
                 </p>
                 <p class="alert text-danger"
-                    v-if="props.data.event.enable_page == 0 && props.data.event.moderation_status == 3">
+                    v-if="props.data.dictionary.enable_page == 0 && props.data.dictionary.moderation_status == 3">
                     <b>Ваша страница не прошла модерацию.</b><br />Вы можете ознакомиться с возможными причинами
                     отклонения
                     вашей страницы <a data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button"
@@ -161,12 +154,6 @@ async function sendToModeration() {
                                 <a href="#tabs-media" class="nav-link" data-bs-toggle="tab">Изображения и видео</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#tabs-program" class="nav-link" data-bs-toggle="tab">Программа</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#tabs-participants" class="nav-link" data-bs-toggle="tab">Участники</a>
-                            </li>
-                            <li class="nav-item">
                                 <a href="#tabs-settings" class="nav-link" data-bs-toggle="tab">Управление</a>
                             </li>
                         </ul>
@@ -175,31 +162,18 @@ async function sendToModeration() {
                         <div class="tab-content">
                             <div class="tab-pane active show" id="tabs-home">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Название события <span
+                                            <label class="form-label">Название музыкального термина <span
                                                     class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="example-text-input"
                                                 placeholder="Не заполнено" v-model="mainInfoForm.title"
                                                 @keyup="translitTitle()">
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Возрастное ограничение <span
-                                                    class="text-danger">*</span></label>
-                                            <select class="form-select" v-model="mainInfoForm.age_restrictions">
-                                                <option>0+</option>
-                                                <option>6+</option>
-                                                <option>12+</option>
-                                                <option>16+</option>
-                                                <option>18+</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Краткое описание для карточки события (не более
+                                            <label class="form-label">Краткое описание для карточки в каталоге (не более
                                                 100
                                                 символов, без точки в конце) <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="example-text-input"
@@ -209,56 +183,15 @@ async function sendToModeration() {
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Подробное описание события <span
+                                            <label class="form-label">Подробное описание <span
                                                     class="text-danger">*</span></label>
                                             <textarea class="form-control" rows="10"
                                                 v-model="mainInfoForm.long_description"></textarea>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Дата проведения события <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="date" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainInfoForm.event_date"
-                                                @change="translitTitle()">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Время проведения события <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="time" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainInfoForm.event_time">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="mb-3">
-                                            <label class="form-label">Стоимость билетов ОТ <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainInfoForm.ticket_price_from">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="mb-3">
-                                            <label class="form-label">Стоимость билетов ДО</label>
-                                            <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainInfoForm.ticket_price_to">
-                                        </div>
-                                    </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Место проведения события (полное название)</label>
-                                            <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainInfoForm.place">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Внешняя ссылка на событие (описание, онлайн
-                                                продажа
-                                                билетов, и т. п.)</label>
+                                            <label class="form-label">Внешняя ссылка (если есть)</label>
                                             <input type="text" class="form-control" name="example-text-input"
                                                 placeholder="Не заполнено" v-model="mainInfoForm.external_link">
                                         </div>
@@ -266,13 +199,7 @@ async function sendToModeration() {
                                 </div>
                             </div>
                             <div class="tab-pane" id="tabs-media">
-                                <Media :event="props.data.event"></Media>
-                            </div>
-                            <div class="tab-pane" id="tabs-program">
-                                <Program :event="props.data.event"></Program>
-                            </div>
-                            <div class="tab-pane" id="tabs-participants">
-                                <Participants :event="props.data.event"></Participants>
+                                <Media :dictionary="props.data.dictionary"></Media>
                             </div>
                             <div class="tab-pane" id="tabs-settings">
                                 <div class="row">
@@ -290,23 +217,12 @@ async function sendToModeration() {
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox"
-                                                    v-model="mainInfoForm.sold_out" @click="checkboxToggle('sold_out')"
-                                                    :checked="mainInfoForm.sold_out">
-                                                <span class="form-check-label">Указать, что все билеты на мероприятие
-                                                    проданы</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
                                             <label class="form-label">Ссылка на событие на сайте BaroqueMusic.ru (это
                                                 значение
                                                 нельзя поменять)</label>
                                             <div class="input-group mb-2">
                                                 <span class="input-group-text">
-                                                    https://baroquemusic.ru/events/
+                                                    https://baroquemusic.ru/encyclopedia/dictionary/
                                                 </span>
                                                 <input type="text" class="form-control" placeholder="Не заполнено"
                                                     autocomplete="off" v-model="mainInfoForm.page_alias"

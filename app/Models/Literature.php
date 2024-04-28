@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class Dictionary extends Model
+class Literature extends Model
 {
     use HasUuids, HasFactory;
 
-    protected $table = 'dictionary';
+    protected $table = 'literature';
     protected $primaryKey = 'id';
 
     public $incrementing = false;
@@ -28,9 +28,5 @@ class Dictionary extends Model
         'external_link',
         'user_id',
         'page_views'
-    ];
-
-    protected $casts = [
-        'enable_page' => 'boolean',
     ];
 }

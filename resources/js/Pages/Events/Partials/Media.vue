@@ -6,7 +6,7 @@ import { Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css';
 
 const props = defineProps({
-    news: Object
+    event: Object
 })
 
 const state = reactive({
@@ -24,7 +24,7 @@ function openPhotoModal(type) {
     imgType.value = type;
     if (imgType.value == 'main_photo') {
         ratio.value = {
-            aspectRatio: 9 / 14
+            aspectRatio: 1 / 1
         };
     } else if (imgType.value == 'page_photo') {
         ratio.value = {
@@ -63,14 +63,14 @@ function uploadImage() {
                     'content-type': 'multipart/form-data'
                 }
             }
-            axios.post('/upload/news_photo/' + props.news.id, form, config)
+            axios.post('/upload/event_photo/' + props.event.id, form, config)
                 .then(response => {
                     if (imgType.value == 'main_photo') {
-                        props.news.main_photo = response.data;
+                        props.event.main_photo = response.data;
                     } else if (imgType.value == 'page_photo') {
-                        props.news.page_photo = response.data;
+                        props.event.page_photo = response.data;
                     } else if (imgType.value == 'additional_photo') {
-                        props.news.artist_photos.push(response.data);
+                        props.event.artist_photos.push(response.data);
                     }
 
                 })
@@ -96,9 +96,9 @@ onMounted(async () => {
         <div class="col-md-6 mb-3">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Изображение в списке новостей</h3>
+                    <h3 class="card-title">Изображение в каталоге исполнителей</h3>
                     <div class="card-actions">
-                        <button :disabled="props.news.moderation_status == 1" @click="openPhotoModal('main_photo')"
+                        <button :disabled="props.event.moderation_status == 1" @click="openPhotoModal('main_photo')"
                             class="btn btn-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -114,7 +114,7 @@ onMounted(async () => {
                 <div class="card-body p-0 text-center">
 
                     <img style="width: 240px;" class="p-2"
-                        :src="'http://baroquemusic.test/storage/' + props.news.main_photo">
+                        :src="'https://baroquemusic.ru/storage/' + props.event.main_photo">
 
                 </div>
             </div>
@@ -122,9 +122,9 @@ onMounted(async () => {
         <div class="col-md-6 mb-3">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Изображение на странице новости</h3>
+                    <h3 class="card-title">Изображение на странице исполнителя</h3>
                     <div class="card-actions">
-                        <button :disabled="props.news.moderation_status == 1" @click="openPhotoModal('page_photo')"
+                        <button :disabled="props.event.moderation_status == 1" @click="openPhotoModal('page_photo')"
                             class="btn btn-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -139,7 +139,7 @@ onMounted(async () => {
                 </div>
                 <div class="card-body p-0 text-center">
                     <img style="width: 240px;" class="p-2"
-                        :src="'http://baroquemusic.test/storage/' + props.news.page_photo">
+                        :src="'https://baroquemusic.ru/storage/' + props.event.page_photo">
 
                 </div>
             </div>

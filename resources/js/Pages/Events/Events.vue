@@ -28,12 +28,14 @@ const state = reactive({
 });
 
 const newEventForm = ref({
-    title: null
+    title: null,
+    event_type: null,
 });
 
 function openNewEventModal() {
     newEventForm.value = {
-        title: null
+        title: null,
+        event_type: null,
     }
     state.newEventModal.show();
 }
@@ -44,10 +46,7 @@ function closeNewEventModal() {
 
 async function createNewEvent() {
     try {
-        const result = await axios.post('/events/create', {
-            data: newEventForm.value,
-            _token: page.props.csrf_token,
-        });
+        const result = await axios.post('/events/create', newEventForm.value);
         closeNewEventModal();
         props.data.events.push(result.data);
     } catch (e) {
@@ -150,6 +149,14 @@ onMounted(async () => {
                             </div>
                             <div class="col-md-12">
                                 <p><small>Название события будет отображаться на страницах сайта</small></p>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Тип события</label>
+                                <select class="form-select" v-model="newEventForm.event_type">
+                                    <option value="1">Концерт, Театр, Представление</option>
+                                    <option value="2">Мастер-класс, Лекция, Экскурсия</option>
+                                    <option value="3">Другое</option>
+                                </select>
                             </div>
                         </div>
                     </div>

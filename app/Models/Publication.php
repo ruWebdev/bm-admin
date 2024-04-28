@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class Dictionary extends Model
+class Publication extends Model
 {
     use HasUuids, HasFactory;
 
-    protected $table = 'dictionary';
+    protected $table = 'publications';
     protected $primaryKey = 'id';
 
     public $incrementing = false;
@@ -25,12 +25,7 @@ class Dictionary extends Model
         'page_photo',
         'moderation_status',
         'enable_page',
-        'external_link',
         'user_id',
         'page_views'
-    ];
-
-    protected $casts = [
-        'enable_page' => 'boolean',
     ];
 }

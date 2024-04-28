@@ -32,6 +32,15 @@ class BandController extends Controller
         return Inertia::render('Bands/Bands', ['data' => $data]);
     }
 
+    public function getAllBands(Request $request)
+    {
+
+        $band = Band::orderBy('title', 'ASC')
+            ->get();
+
+        return response()->json($band);
+    }
+
 
     public function createBand(Request $request)
     {
@@ -72,6 +81,18 @@ class BandController extends Controller
             ->get();
 
         return response()->json($bands);
+    }
+
+    public function createBandFromSelect(Request $request)
+    {
+
+        $band = Band::create([
+            'title' => $request->title,
+            'main_photo' => 'bands/no-band-image.jpg',
+            'page_photo' => 'bands/no-band-image.jpg'
+        ]);
+
+        return response()->json($band);
     }
 
     public function connectBand(Request $request)
