@@ -22,6 +22,15 @@ import translitRusEng from 'translit-rus-eng'
 
 import { useToast } from "vue-toastification";
 
+import CKEditor from '@ckeditor/ckeditor5-vue'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+
+const editor = ClassicEditor
+const ckeditor = CKEditor.component
+const editorConfig = {
+    toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+}
+
 const toast = useToast();
 
 const props = defineProps(['data']);
@@ -120,27 +129,6 @@ async function sendToModeration() {
         </template>
 
         <div class="row row-cards">
-
-            <div class="col-md-12 col-lg-12">
-                <p class="alert text-danger"
-                    v-if="props.data.dictionary.enable_page == 0 && props.data.dictionary.moderation_status == 0">
-                    <b>Событие не показывается на сайте.</b><br />Для включения страницы вам
-                    необходимо заполнить все необходимые поля (*) и отправить анкету на модерацию.
-                </p>
-                <p class="alert text-info"
-                    v-if="props.data.dictionary.enable_page == 0 && props.data.dictionary.moderation_status == 1">
-                    <b>Событие отправлена на модерацию.</b><br />Мы отправим вам письмо как только модерация будет
-                    пройдена. Тогда вы сможете включить страницу на сайте и менять данные в анкете.
-                </p>
-                <p class="alert text-danger"
-                    v-if="props.data.dictionary.enable_page == 0 && props.data.dictionary.moderation_status == 3">
-                    <b>Ваша страница не прошла модерацию.</b><br />Вы можете ознакомиться с возможными причинами
-                    отклонения
-                    вашей страницы <a data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button"
-                        aria-controls="offcanvasEnd">здесь</a>.
-                </p>
-            </div>
-
             <div class="col-md-12 col-lg-12 mt-0">
 
                 <div class="card">
@@ -185,8 +173,9 @@ async function sendToModeration() {
                                         <div class="mb-3">
                                             <label class="form-label">Подробное описание <span
                                                     class="text-danger">*</span></label>
-                                            <textarea class="form-control" rows="10"
-                                                v-model="mainInfoForm.long_description"></textarea>
+                                            <ckeditor :editor="editor" v-model="mainInfoForm.long_description"
+                                                :config="editorConfig">
+                                            </ckeditor>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
