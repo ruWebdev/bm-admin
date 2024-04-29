@@ -20,6 +20,8 @@ use App\Models\EventPhoto;
 
 use App\Models\News;
 
+use App\Models\Publication;
+
 use App\Models\Composer;
 use App\Models\ComposerPhoto;
 
@@ -240,6 +242,60 @@ class UploadController extends Controller
         } else if ($request->type == 'additional_photo') {
             $result = ArtistPhoto::create([
                 'composer_id' => $id,
+                'file_name' => $fileName,
+                'full_path' => $destinationPath . $fileName
+            ]);
+        }
+
+        return response()->json($result);
+    }
+
+    public function uploadPublicationPhoto($id, Request $request)
+    {
+
+        $manager = new ImageManager(new Driver());
+
+        $file = $request->file('file');
+        $img = $manager->read($file->path());
+
+        $destinationPath = 'publications/' . $id . '/photo/';
+        $fileName = rand() . ".jpg";
+
+        if ($request->type == 'main_photo') {
+            $img->scale(width: 300);
+        } else {
+            $img->scale(width: 900);
+        }
+
+        $finalImage = $img->toJpeg(90);
+
+        $path = Storage::disk('public')->put($destinationPath . $fileName, $finalImage);
+
+        $publication = Publication::find($id);
+
+        if ($request->type == 'main_photo') {
+
+            if ($publication->main_photo != '' && $publication->main_photo != 'publication/no-publication-image.jpg') {
+                Storage::disk('public')->delete($publication->main_photo);
+            }
+
+            $publication->main_photo = $destinationPath . $fileName;
+            $result = $destinationPath . $fileName;
+
+            $publication->save();
+        } else if ($request->type == 'page_photo') {
+
+            if ($publication->page_photo != '' && $publication->page_photo != 'publication/no-publication-image.jpg') {
+                Storage::disk('public')->delete($publication->page_photo);
+            }
+
+            $publication->page_photo = $destinationPath . $fileName;
+            $result = $destinationPath . $fileName;
+
+            $publication->save();
+        } else if ($request->type == 'additional_photo') {
+            $result = DictionaryPhoto::create([
+                'instrument_id' => $id,
                 'file_name' => $fileName,
                 'full_path' => $destinationPath . $fileName
             ]);

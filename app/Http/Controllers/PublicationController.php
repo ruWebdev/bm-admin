@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+use App\Mail\PublicationModerationAccept;
+use App\Mail\PublicationModerationDeny;
+use Illuminate\Support\Facades\Mail;
+
+use App\Models\User;
 use App\Models\Publication;
 
 class PublicationController extends Controller
@@ -15,68 +20,70 @@ class PublicationController extends Controller
 
         $data = array();
 
-        $data['instruments'] = MusicalInstrument::orderBy('title', 'ASC')
+        $data['publications'] = Publication::orderBy('created_at', 'DESC')
             ->get();
 
 
-        return Inertia::render('Instruments/Instruments', ['data' => $data]);
+        return Inertia::render('Publications/Publications', ['data' => $data]);
     }
 
-    public function createMusicalInstrument(Request $request)
+    public function createPublication(Request $request)
     {
 
-        $newItem = MusicalInstrument::create(
+        $newItem = Publication::create(
             [
                 'title' => $request->data['title'],
-                'main_photo' => 'instruments/no-instrument-photo.jpg',
-                'page_photo' => 'instruments/no-instrument-photo.jpg'
+                'main_photo' => 'publications/no-publication-image.jpg',
+                'page_photo' => 'publications/no-publication-image.jpg',
+                'moderation_status' => 3,
             ]
         );
 
         return response()->json($newItem);
     }
 
-    public function viewMusicalInstrument($id)
+    public function viewPublication($id)
     {
 
         $data = array();
 
-        $data['instrument'] = MusicalInstrument::find($id);
+        $data['publication'] = Publication::find($id);
 
-        return Inertia::render('Instruments/ViewInstrument', ['data' => $data]);
+        return Inertia::render('Publications/ViewPublication', ['data' => $data]);
     }
 
-    public function updateMusicalInstrument($id, Request $request)
+    public function updatePublication($id, Request $request)
     {
-        $composer = MusicalInstrument::find($id);
+        $publication = Publication::find($id);
 
-        $composer->title = $request->title;
-        $composer->title_rod = $request->title_rod;
-        $composer->short_description = $request->short_description;
-        $composer->long_description = $request->long_description;
-        $composer->page_alias = $request->page_alias;
-        $composer->enabled = true;
+        $publication->page_alias = $request->page_alias;
+        $publication->title = $request->title;
+        $publication->short_description = $request->short_description;
+        $publication->long_description = $request->long_description;
+        $publication->enable_page = $request->enable_page;
 
-        $composer->save();
+        $publication->save();
     }
 
-    public function getAllInstruments(Request $request)
+    public function acceptModeration($id)
     {
+        $publication = Publication::find($id);
+        $publication->moderation_status = 3;
+        $publication->save();
 
+        $user = User::find($publication->user_id);
 
-        $instruments = MusicalInstrument::orderBy('title', 'ASC')
-            ->get();
-
-        return response()->json($instruments);
+        Mail::to($user->email)->send(new PublicationModerationAccept());
     }
 
-    public function createInstrumentFromSelect(Request $request)
+    public function denyModeration($id)
     {
+        $publication = publication::find($id);
+        $publication->moderation_status = 2;
+        $publication->save();
 
-        $instrument = MusicalInstrument::create([
-            'title' => $request->title
-        ]);
+        $user = User::find($publication->user_id);
 
-        return response()->json($instrument);
+        Mail::to($user->email)->send(new PublicationModerationDeny());
     }
 }
