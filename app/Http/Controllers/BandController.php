@@ -6,6 +6,12 @@ use Inertia\Inertia;
 
 use Illuminate\Http\Request;
 
+use App\Mail\BandModerationAccept;
+use App\Mail\BandModerationDeny;
+use Illuminate\Support\Facades\Mail;
+
+use App\Models\User;
+
 use App\Models\Band;
 use App\Models\BandParticipant;
 use App\Models\BandPhoto;
@@ -25,7 +31,7 @@ class BandController extends Controller
             ->get();
 
         $data['bands'] = Band::where('moderation_status', 0)
-            ->orWhere('moderation_status', 4)
+            ->orWhere('moderation_status', 3)
             ->orderBy('updated_at', 'DESC')
             ->get();
 
@@ -50,8 +56,8 @@ class BandController extends Controller
                 [
                     'user_id' => auth()->user()->id,
                     'title' => $request->title,
-                    'enable' => 0,
-                    'moderation_status' => 0,
+                    'enable_page' => false,
+                    'moderation_status' => 3,
                     'status' => 0,
                 ]
             );
@@ -64,8 +70,8 @@ class BandController extends Controller
             $band = Band::create(
                 [
                     'title' => $request->title,
-                    'enable' => 0,
-                    'moderation_status' => 0,
+                    'enable_page' => false,
+                    'moderation_status' => 3,
                     'status' => 0,
                 ]
             );
@@ -89,7 +95,9 @@ class BandController extends Controller
         $band = Band::create([
             'title' => $request->title,
             'main_photo' => 'bands/no-band-image.jpg',
-            'page_photo' => 'bands/no-band-image.jpg'
+            'page_photo' => 'bands/no-band-image.jpg',
+            'enable_page' => 0,
+            'moderation_status' => 3,
         ]);
 
         return response()->json($band);
@@ -130,7 +138,15 @@ class BandController extends Controller
 
         $data = array();
 
-        $data['band'] = Band::find($id);
+        $data['band'] = Band::where('bands.id', $id)
+            ->with([
+                'participants' => function ($q) {
+                    $q
+                        ->leftJoin('artists', 'artists.id', '=', 'band_participants.artist_id')
+                        ->select('band_participants.*', 'artists.last_name AS last_name', 'artists.first_name AS first_name')
+                        ->orderBy('artists.last_name', 'ASC');
+                }
+            ])->first();
         $data['band_photos'] = BandPhoto::where('band_id', $id)->get();
 
         return Inertia::render('Bands/ViewBand', ['data' => $data]);
@@ -140,7 +156,7 @@ class BandController extends Controller
     {
         $band = Band::find($id);
 
-        $band->name = $request->name;
+        $band->title = $request->title;
         $band->short_description = $request->short_description;
         $band->long_description = $request->long_description;
         $band->country = $request->country;
@@ -165,5 +181,27 @@ class BandController extends Controller
         }
 
         return response()->json($band);
+    }
+
+    public function acceptModeration($id)
+    {
+        $band = Band::find($id);
+        $band->moderation_status = 3;
+        $band->save();
+
+        $user = User::find($band->user_id);
+
+        Mail::to($user->email)->send(new BandModerationAccept());
+    }
+
+    public function denyModeration($id)
+    {
+        $band = Band::find($id);
+        $band->moderation_status = 2;
+        $band->save();
+
+        $user = User::find($band->user_id);
+
+        Mail::to($user->email)->send(new BandModerationDeny());
     }
 }

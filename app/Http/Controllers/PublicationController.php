@@ -35,6 +35,7 @@ class PublicationController extends Controller
                 'title' => $request->data['title'],
                 'main_photo' => 'publications/no-publication-image.jpg',
                 'page_photo' => 'publications/no-publication-image.jpg',
+                'enable_page' => false,
                 'moderation_status' => 3,
             ]
         );

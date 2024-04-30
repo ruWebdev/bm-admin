@@ -67,6 +67,11 @@ onMounted(async () => {
 
     <ContentLayout>
 
+        <template #BreadCrumbs>
+            <Link class="text-primary" href="/">Главная страница</Link> /
+            Новости
+        </template>
+
         <template #PageTitle>
             Новости
         </template>
@@ -86,7 +91,51 @@ onMounted(async () => {
             <div class="col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Список новостей</h3>
+                        <h3 class="card-title">Список новостей, нуждающихся в модерации</h3>
+                    </div>
+                    <div class="card-body p-0 m-0">
+                        <div class="table-responsive">
+                            <table class="table table-vcenter card-table">
+                                <thead>
+                                    <tr>
+                                        <th>Заголовок</th>
+                                        <th>Статус</th>
+                                        <th>Модерация</th>
+                                        <th>Просмотры</th>
+                                        <th class="w-1"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="news in props.data.news_moderation">
+                                        <td>{{ news.title }}</td>
+                                        <td class="text-muted">
+                                            <template v-if="news.artist != 0">{{ news.artist }}</template>
+                                            <template v-else>Не указан</template>
+                                        </td>
+                                        <td class="text-muted">
+                                            <template v-if="news.day != null">{{ news.day }} {{ news.month }} {{
+                                                news.year }}</template>
+                                            <template v-else>Не указан</template>
+                                        </td>
+                                        <td class="text-muted">
+                                            <template v-if="news.status == 0">Добавлено</template>
+                                        </td>
+                                        <td>
+                                            <Link :href="'/news/view/' + news.id">Редактировать</Link>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Список одобренных новостей или только что добавленных новостей</h3>
                     </div>
                     <div class="card-body p-0 m-0">
                         <div class="table-responsive">

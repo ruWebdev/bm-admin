@@ -67,6 +67,11 @@ onMounted(async () => {
 
     <ContentLayout>
 
+        <template #BreadCrumbs>
+            <Link class="text-primary" href="/dashboard">Главная страница</Link> /
+            Исполнители
+        </template>
+
         <template #PageTitle>
             Исполнители
         </template>

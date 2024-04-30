@@ -21,13 +21,13 @@ class BandParticipant extends Model
 
     protected $fillable = [
         'user_id',
-        'band_id',   
-        'role'      
+        'artist_id',
+        'band_id',
+        'role'
     ];
 
     public function band(): HasOne
     {
         return $this->HasOne(Band::class, "id", "band_id");
     }
-
 }

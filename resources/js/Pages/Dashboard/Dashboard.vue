@@ -20,6 +20,10 @@ import { Head, Link } from '@inertiajs/vue3';
 
     <ContentLayout>
 
+        <template #BreadCrumbs>
+            Главная страница
+        </template>
+
         <template #PageTitle>
             Добро пожаловать!
         </template>

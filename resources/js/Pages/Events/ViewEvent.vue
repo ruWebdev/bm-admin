@@ -78,11 +78,21 @@ async function checkForModeration() {
     }
 }
 
-async function sendToModeration() {
+async function acceptModeration() {
     try {
-        await axios.post('/event/request_moderation/' + props.data.event.id)
-        props.data.event.moderation_status = 1;
-        toast.success("Страница отправлена на модерацию");
+        await axios.post('/events/accept_moderation/' + props.data.event.id)
+        props.data.event.moderation_status = 3;
+        toast.success("Страница подтверждена");
+    } catch (e) {
+        toast.warning("Ой, что-то пошло не так... Скоро исправимся!");
+    }
+}
+
+async function denyModeration() {
+    try {
+        await axios.post('/events/deny_moderation/' + props.data.event.id)
+        props.data.event.moderation_status = 2;
+        toast.success("Страница отклонена");
     } catch (e) {
         toast.warning("Ой, что-то пошло не так... Скоро исправимся!");
     }
@@ -96,13 +106,18 @@ async function sendToModeration() {
 
     <ContentLayout>
 
+        <template #BreadCrumbs>
+            <Link class="text-primary" href="/">Главная страница</Link> /
+            <Link class="text-primary" href="/events">События</Link> /
+            Редактирование события
+        </template>
+
         <template #PageTitle>
             Редактирование события
         </template>
 
         <template #RightButtons>
-            <button :disabled="props.data.event.moderation_status == 1" class="btn btn-success me-2"
-                @click="saveChanges()">
+            <button class="btn btn-primary me-2 d-none d-sm-inline-block" @click="saveChanges()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy">
@@ -113,8 +128,17 @@ async function sendToModeration() {
                 </svg>
                 Сохранить изменения
             </button>
-            <button :disabled="props.data.event.moderation_status == 1" class="btn btn-info"
-                @click="checkForModeration()">
+            <button class="btn btn-danger d-none d-sm-inline-block me-2" @click="denyModeration()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-circle-off">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M20.042 16.045a9 9 0 0 0 -12.087 -12.087m-2.318 1.677a9 9 0 1 0 12.725 12.73" />
+                    <path d="M3 3l18 18" />
+                </svg>
+                Отклонить
+            </button>
+            <button class="btn btn-success d-none d-sm-inline-block" @click="acceptModeration()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-checkbox">
@@ -122,31 +146,11 @@ async function sendToModeration() {
                     <path d="M9 11l3 3l8 -8" />
                     <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
                 </svg>
-                Отправить событие на модерацию
+                Подтвердить
             </button>
         </template>
 
         <div class="row row-cards">
-
-            <div class="col-md-12 col-lg-12">
-                <p class="alert text-danger"
-                    v-if="props.data.event.enable_page == 0 && props.data.event.moderation_status == 0">
-                    <b>Событие не показывается на сайте.</b><br />Для включения страницы вам
-                    необходимо заполнить все необходимые поля (*) и отправить анкету на модерацию.
-                </p>
-                <p class="alert text-info"
-                    v-if="props.data.event.enable_page == 0 && props.data.event.moderation_status == 1">
-                    <b>Событие отправлена на модерацию.</b><br />Мы отправим вам письмо как только модерация будет
-                    пройдена. Тогда вы сможете включить страницу на сайте и менять данные в анкете.
-                </p>
-                <p class="alert text-danger"
-                    v-if="props.data.event.enable_page == 0 && props.data.event.moderation_status == 3">
-                    <b>Ваша страница не прошла модерацию.</b><br />Вы можете ознакомиться с возможными причинами
-                    отклонения
-                    вашей страницы <a data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button"
-                        aria-controls="offcanvasEnd">здесь</a>.
-                </p>
-            </div>
 
             <div class="col-md-12 col-lg-12 mt-0">
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class Band extends Model
@@ -23,6 +24,7 @@ class Band extends Model
         'country',
         'city',
         'main_photo',
+        'page_photo',
         'short_description',
         'long_description',
         'enable_page',
@@ -32,4 +34,9 @@ class Band extends Model
     protected $casts = [
         'enable_page' => 'boolean',
     ];
+
+    public function participants(): HasMany
+    {
+        return $this->HasMany(BandParticipant::class, "band_id", "id");
+    }
 }

@@ -16,47 +16,98 @@ import { defineEmits, ref, reactive, watch, onMounted } from 'vue';
 import ContentLayout from '@/Layouts/ContentLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
+import ModerationStatusAlert from '@/Components/ModerationStatusAlert.vue';
+
 import Media from './Partials/Media.vue';
+import Participants from './Partials/Participants.vue';
 
 import translitRusEng from 'translit-rus-eng'
 
 import { useToast } from "vue-toastification";
 
-const toast = useToast();
+import CKEditor from '@ckeditor/ckeditor5-vue'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+
+const editor = ClassicEditor
+const ckeditor = CKEditor.component
+const editorConfig = {
+    toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+}
+
 
 const props = defineProps(['data']);
 
+const toast = useToast();
+
+const state = reactive({
+    newPhotoModal: null
+});
+
+const imageUrl = ref(null);
+
+const img = ref(null);
+
 const mainInfoForm = ref({
-    page_alias: props.data.news.page_alias,
-    title: props.data.news.title,
-    short_description: props.data.news.short_description,
-    long_description: props.data.news.long_description,
-    enable_page: props.data.news.enable_page,
-    external_link: props.data.news.external_link,
+    title: props.data.band.title,
+    short_description: props.data.band.short_description,
+    long_description: props.data.band.long_description,
+    country: props.data.band.country,
+    city: props.data.band.city,
+    page_alias: props.data.band.page_alias,
+    external_link: props.data.band.external_link,
+    enable_page: props.data.band.enable_page,
 })
+
+function openNewPhotoModal() {
+    img.value = null;
+    state.newPhotoModal.show();
+}
+
+function closeNewPhotoModal() {
+    state.newPhotoModal.hide();
+}
+
 
 function translitTitle() {
     mainInfoForm.value.page_alias = translitRusEng(mainInfoForm.value.title, { slug: true, lowerCase: true });
+}
+
+function onFileChange(e) {
+    const file = e.target.files[0];
+    img.value = URL.createObjectURL(file);
+}
+
+function change({ coordinates, canvas }) {
+    console.log(coordinates, canvas)
 }
 
 function checkboxToggle(field) {
     mainInfoForm.value[field] = !mainInfoForm.value[field];
 }
 
+
 async function saveChanges() {
     try {
         translitTitle();
-        await axios.post('/news/save_changes/' + props.data.news.id, mainInfoForm.value)
+        await axios.post('/bands/save_changes/' + props.data.band.id, mainInfoForm.value)
         toast.success("Изменения успешно сохранены");
     } catch (e) {
 
     }
 }
 
+async function checkForModeration() {
+    if (mainInfoForm.value.title && mainInfoForm.value.short_description && mainInfoForm.value.long_description) {
+        sendToModeration();
+    } else {
+        toast.warning("Вы не заполнили все необходимые поля...");
+    }
+}
+
 async function acceptModeration() {
     try {
-        await axios.post('/news/accept_moderation/' + props.data.news.id)
-        props.data.news.moderation_status = 3;
+        await axios.post('/bands/accept_moderation/' + props.data.band.id)
+        props.data.band.moderation_status = 3;
         toast.success("Страница подтверждена");
     } catch (e) {
         toast.warning("Ой, что-то пошло не так... Скоро исправимся!");
@@ -65,8 +116,8 @@ async function acceptModeration() {
 
 async function denyModeration() {
     try {
-        await axios.post('/news/deny_moderation/' + props.data.news.id)
-        props.data.news.moderation_status = 2;
+        await axios.post('/bands/deny_moderation/' + props.data.band.id)
+        props.data.band.moderation_status = 2;
         toast.success("Страница отклонена");
     } catch (e) {
         toast.warning("Ой, что-то пошло не так... Скоро исправимся!");
@@ -77,18 +128,18 @@ async function denyModeration() {
 
 <template>
 
-    <Head title="Редактирование новости" />
+    <Head title="Редактирование коллектива" />
 
     <ContentLayout>
 
         <template #BreadCrumbs>
-            <Link class="text-primary" href="/">Главная страница</Link> /
-            <Link class="text-primary" href="/news">Новости</Link> /
-            Редактирование новости
+            <Link class="text-primary" href="/dashboard">Главная страница</Link> /
+            <Link class="text-primary" href="/bands">Мои коллективы</Link> /
+            Редактирование коллектива
         </template>
 
         <template #PageTitle>
-            Редактирование новости
+            Редактирование коллектива
         </template>
 
         <template #RightButtons>
@@ -126,51 +177,42 @@ async function denyModeration() {
         </template>
 
         <div class="row row-cards">
-
             <div class="col-md-12 col-lg-12">
-                <p class="alert text-danger"
-                    v-if="props.data.news.enable_page == 0 && props.data.news.moderation_status == 0">
-                    <b>Событие не показывается на сайте.</b><br />Для включения страницы вам
-                    необходимо заполнить все необходимые поля (*) и отправить анкету на модерацию.
-                </p>
-                <p class="alert text-info"
-                    v-if="props.data.news.enable_page == 0 && props.data.news.moderation_status == 1">
-                    <b>Событие отправлена на модерацию.</b><br />Мы отправим вам письмо как только модерация будет
-                    пройдена. Тогда вы сможете включить страницу на сайте и менять данные в анкете.
-                </p>
-                <p class="alert text-danger"
-                    v-if="props.data.news.enable_page == 0 && props.data.news.moderation_status == 3">
-                    <b>Ваша страница не прошла модерацию.</b><br />Вы можете ознакомиться с возможными причинами
-                    отклонения
-                    вашей страницы <a data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button"
-                        aria-controls="offcanvasEnd">здесь</a>.
-                </p>
-            </div>
-
-            <div class="col-md-12 col-lg-12 mt-0">
-
+                <div class="col-md-12 col-lg-12">
+                    <ModerationStatusAlert :status="props.data.band.moderation_status"
+                        :enabled="mainInfoForm.enable_page">
+                    </ModerationStatusAlert>
+                </div>
                 <div class="card">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
                             <li class="nav-item">
-                                <a href="#tabs-home" class="nav-link active" data-bs-toggle="tab">Основная
+                                <a href="#tabs-info" class="nav-link active" data-bs-toggle="tab">Основная
                                     информация</a>
                             </li>
                             <li class="nav-item">
                                 <a href="#tabs-media" class="nav-link" data-bs-toggle="tab">Изображения и видео</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#tabs-settings" class="nav-link" data-bs-toggle="tab">Управление</a>
+                                <a href="#tabs-participants" class="nav-link" data-bs-toggle="tab">Участники</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#tabs-settings" class="nav-link" data-bs-toggle="tab">Настройки</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#tabs-delete" class="nav-link text-danger" data-bs-toggle="tab">Удаление
+                                    коллектива</a>
                             </li>
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
-                            <div class="tab-pane active show" id="tabs-home">
+                            <div class="tab-pane active show" id="tabs-info">
                                 <div class="row">
+
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Заголовок новости <span
+                                            <label class="form-label">Название коллектива <span
                                                     class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="example-text-input"
                                                 placeholder="Не заполнено" v-model="mainInfoForm.title"
@@ -179,7 +221,7 @@ async function denyModeration() {
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Краткое описание для карточки новости (не более
+                                            <label class="form-label">Краткое описание для карточки коллектива (не более
                                                 100
                                                 символов, без точки в конце) <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="example-text-input"
@@ -189,56 +231,87 @@ async function denyModeration() {
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Текст новости <span
+                                            <label class="form-label">Подробное описание коллектива <span
                                                     class="text-danger">*</span></label>
-                                            <textarea class="form-control" rows="10"
-                                                v-model="mainInfoForm.long_description"></textarea>
+                                            <ckeditor :editor="editor" v-model="mainInfoForm.long_description"
+                                                :config="editorConfig">
+                                            </ckeditor>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Внешняя ссылка на событие (описание, онлайн
-                                                продажа
-                                                билетов, и т. п.)</label>
+                                            <label class="form-label">Страна</label>
                                             <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" v-model="mainInfoForm.external_link">
+                                                placeholder="Не заполнено" v-model="mainInfoForm.country">
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Город</label>
+                                            <input type="text" class="form-control" name="example-text-input"
+                                                placeholder="Не заполнено" v-model="mainInfoForm.city">
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="tab-pane" id="tabs-media">
-                                <Media :news="props.data.news"></Media>
+                                <Media :band="props.data.band"></Media>
+                            </div>
+                            <div class="tab-pane" id="tabs-participants">
+                                <Participants :band="props.data.band"></Participants>
                             </div>
                             <div class="tab-pane" id="tabs-settings">
+
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" v-if="props.data.band.moderation_status == 3">
                                         <div class="mb-3">
                                             <label class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox"
                                                     v-model="mainInfoForm.enable_page"
                                                     @click="checkboxToggle('enable_page')"
                                                     :checked="mainInfoForm.enable_page">
-                                                <span class="form-check-label">Показывать новость на сайте
+                                                <span class="form-check-label">Показывать страницу коллектива на сайте
                                                     BaroqueMusic.ru</span>
                                             </label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Ссылка на новость на сайте BaroqueMusic.ru (это
-                                                значение
-                                                нельзя поменять)</label>
+                                            <label class="form-label">Ссылка на событие на сайте BaroqueMusic.ru</label>
                                             <div class="input-group mb-2">
                                                 <span class="input-group-text">
-                                                    https://baroquemusic.ru/events/
+                                                    https://baroquemusic.ru/bands/
                                                 </span>
                                                 <input type="text" class="form-control" placeholder="Не заполнено"
-                                                    autocomplete="off" v-model="mainInfoForm.page_alias"
-                                                    disabled="disabled">
+                                                    autocomplete="off" v-model="mainInfoForm.page_alias">
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Внешняя ссылка (сайт, сообщество в соц. сетях,
+                                                телеграм
+                                                канал)</label>
+                                            <input type="text" class="form-control" name="example-text-input"
+                                                placeholder="Не заполнено" v-model="mainInfoForm.external_link">
+                                            <p><small>Обратите внимание, модерация страницы не будет пройдена, если
+                                                    ссылка ведет
+                                                    на запрещенные в РФ ресурсы</small></p>
+                                        </div>
+                                    </div>
                                 </div>
+
+                            </div>
+                            <div class="tab-pane text-center" id="tabs-delete">
+
+                                <p class="mt-4 mb-4">Удаление коллектива в настоящее время не предусмотрено.<br />Если
+                                    вы не
+                                    хотите
+                                    показывать
+                                    страницу
+                                    коллектива на сайте, вы можете выбрать соответствующий пункт в настройках.</p>
+
                             </div>
                         </div>
                     </div>
@@ -246,6 +319,7 @@ async function denyModeration() {
 
             </div>
         </div>
+
 
     </ContentLayout>
 

@@ -61,6 +61,12 @@ Route::controller(BandController::class)->middleware(['auth', 'verified'])->grou
         Route::post('/bands/get_all', 'getAllBands')->name('bands.get_all'); // Отправная точка        
         Route::post('/bands/create_from_select', 'createBandFromSelect')->name('bands.create_from_select'); // Отправная точка    
 
+        Route::get('/bands/view/{id}', 'viewBand')->name('bands.view'); // Отправная точка       
+        Route::post('/bands/save_changes/{id}', 'updateBand')->name('bands.update'); // Отправная точка  
+
+        Route::post('/bands/accept_moderation/{id}', 'acceptModeration')->name('bands.accept_moderation'); // Отправная точка 
+        Route::post('/bands/deny_moderation/{id}', 'denyModeration')->name('bands.deny_moderation'); // Отправная точка 
+
     }
 );
 
@@ -76,7 +82,11 @@ Route::controller(EventController::class)->middleware(['auth', 'verified'])->gro
         Route::post('/events/delete_program/{id}', 'deleteEventProgram')->name('events.delete_program'); // Отправная точка        
 
         Route::post('/events/add_participant/{id}', 'addEventParticipant')->name('events.add_participant'); // Отправная точка        
-        Route::post('/events/delete_participant/{id}', 'deleteEventParticipant')->name('events.delete_participant'); // Отправная точка      
+        Route::post('/events/delete_participant/{id}', 'deleteEventParticipant')->name('events.delete_participant'); // Отправная точка  
+
+        Route::post('/events/accept_moderation/{id}', 'acceptModeration')->name('events.accept_moderation'); // Отправная точка 
+        Route::post('/events/deny_moderation/{id}', 'denyModeration')->name('events.deny_moderation'); // Отправная точка 
+
     }
 );
 
@@ -87,7 +97,10 @@ Route::controller(NewsController::class)->middleware(['auth', 'verified'])->grou
         Route::get('/news/view/{id}', 'viewItem')->name('news.view'); // Отправная точка        
         Route::post('/news/create', 'createItem')->name('news.create'); // Отправная точка     
 
-        Route::post('/news/save_changes/{id}', 'updateNews')->name('news.update'); // Отправная точка        
+        Route::post('/news/save_changes/{id}', 'updateNews')->name('news.update'); // Отправная точка  
+
+        Route::post('/news/accept_moderation/{id}', 'acceptModeration')->name('news.accept_moderation'); // Отправная точка 
+        Route::post('/news/deny_moderation/{id}', 'denyModeration')->name('news.deny_moderation'); // Отправная точка 
     }
 );
 
@@ -97,7 +110,10 @@ Route::controller(PublicationController::class)->middleware(['auth', 'verified']
 
         Route::get('/publications/view/{id}', 'viewPublication')->name('publications.view'); // Отправная точка        
         Route::post('/publications/create', 'createPublication')->name('publications.create'); // Отправная точка        
-        Route::post('/publications/save_changes/{id}', 'updatePublication')->name('publications.update'); // Отправная точка    
+        Route::post('/publications/save_changes/{id}', 'updatePublication')->name('publications.update'); // Отправная точка  
+
+        Route::post('/publications/accept_moderation/{id}', 'acceptModeration')->name('publications.accept_moderation'); // Отправная точка 
+        Route::post('/publications/deny_moderation/{id}', 'denyModeration')->name('publications.deny_moderation'); // Отправная точка 
 
     }
 );

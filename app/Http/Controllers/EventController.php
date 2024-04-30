@@ -6,7 +6,13 @@ use Inertia\Inertia;
 
 use Illuminate\Http\Request;
 
+use App\Mail\ArtistModerationAccept;
+use App\Mail\ArtistModerationDeny;
+use Illuminate\Support\Facades\Mail;
+
 use App\Models\Composer;
+
+use App\Models\User;
 
 use App\Models\Artist;
 use App\Models\Band;
@@ -25,7 +31,14 @@ class EventController extends Controller
 
         $data = array();
 
-        $data['events'] = Event::where('user_id', auth()->user()->id)
+        $data['event_moderation'] = Event::where('moderation_status', 1)
+            ->orWhere('moderation_status', 2)
+            ->orderBy('event_date', 'DESC')
+            ->orderBy('event_time', 'DESC')
+            ->get();
+
+        $data['events'] = Event::where('moderation_status', 0)
+            ->orWhere('moderation_status', 3)
             ->orderBy('event_date', 'DESC')
             ->orderBy('event_time', 'DESC')
             ->get();
@@ -46,9 +59,8 @@ class EventController extends Controller
                 'main_photo' => 'events/no-event-image.jpg',
                 'page_photo' => 'events/no-event-image.jpg',
                 'enable_page' => 0,
-                'archive' => 0,
-                'moderation_status' => 0,
-                'status' => 0,
+                'archived' => 0,
+                'moderation_status' => 3,
             ]
         );
 
@@ -141,8 +153,8 @@ class EventController extends Controller
 
         if ($request->type == 1) {
             $data['artist_id'] = $request->value;
-            $artist = Artist::find($request->value);
-            $title = $artist->first_name . ' ' . $artist->last_name;
+            $event = Artist::find($request->value);
+            $title = $event->first_name . ' ' . $event->last_name;
         } else if ($request->type == 2) {
             $data['band_id'] = $request->value;
             $band = Band::find($request->value);
@@ -152,8 +164,8 @@ class EventController extends Controller
         $newEventParticipant = EventParticipant::create($data);
 
         if ($request->type == 1) {
-            $newEventParticipant->last_name = $artist->last_name;
-            $newEventParticipant->first_name = $artist->first_name;
+            $newEventParticipant->last_name = $event->last_name;
+            $newEventParticipant->first_name = $event->first_name;
         } else if ($request->type == 2) {
             $newEventParticipant->title = $title;
         }
@@ -169,10 +181,25 @@ class EventController extends Controller
         }
     }
 
-    public function requestModeration($id)
+    public function acceptModeration($id)
     {
         $event = Event::find($id);
-        $event->moderation_status = 1;
+        $event->moderation_status = 3;
         $event->save();
+
+        $user = User::find($event->user_id);
+
+        // Mail::to($user->email)->send(new ArtistModerationAccept());
+    }
+
+    public function denyModeration($id)
+    {
+        $event = Event::find($id);
+        $event->moderation_status = 2;
+        $event->save();
+
+        $user = User::find($event->user_id);
+
+        // Mail::to($user->email)->send(new ArtistModerationDeny());
     }
 }

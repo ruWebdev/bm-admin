@@ -52,7 +52,9 @@ class ArtistController extends Controller
         Artist::create([
             'last_name' => $request->last_name,
             'first_name' => $request->first_name,
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
+            'enable_page' => false,
+            'moderation_status' => 3,
         ]);
 
         $user = User::find(auth()->user()->id);

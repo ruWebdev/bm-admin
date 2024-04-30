@@ -67,6 +67,11 @@ onMounted(async () => {
 
     <ContentLayout>
 
+        <template #BreadCrumbs>
+            <Link class="text-primary" href="/dashboard">Главная страница</Link> /
+            Коллективы
+        </template>
+
         <template #PageTitle>
             Коллективы
         </template>
@@ -129,7 +134,7 @@ onMounted(async () => {
                                                     class="badge bg-green-lt">Модерация пройдена</span></template>
                                         </td>
                                         <td>
-                                            <Link :href="'/artists/view/' + band.id">Просмотр</Link>
+                                            <Link :href="'/bands/view/' + band.id">Просмотр</Link>
                                         </td>
                                     </tr>
 
@@ -187,7 +192,7 @@ onMounted(async () => {
                                                     class="badge bg-green-lt">Модерация пройдена</span></template>
                                         </td>
                                         <td>
-                                            <Link :href="'/artists/view/' + band.id">Просмотр</Link>
+                                            <Link :href="'/bands/view/' + band.id">Просмотр</Link>
                                         </td>
                                     </tr>
 

@@ -67,6 +67,11 @@ onMounted(async () => {
 
     <ContentLayout>
 
+        <template #BreadCrumbs>
+            <Link class="text-primary" href="/">Главная страница</Link> /
+            События
+        </template>
+
         <template #PageTitle>
             События
         </template>
@@ -82,11 +87,59 @@ onMounted(async () => {
                 Добавить событие
             </a>
         </template>
+        <div class="row row-cards mb-3">
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Список одобренных событий или только что созданных событий</h3>
+                    </div>
+                    <div class="card-body p-0 m-0">
+                        <div class="table-responsive">
+                            <table class="table table-vcenter card-table">
+                                <thead>
+                                    <tr>
+                                        <th>Навание</th>
+                                        <th>Исполнитель</th>
+                                        <th>Дата проведения</th>
+                                        <th>Статус</th>
+                                        <th class="w-1"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="event in props.data.event_moderation">
+                                        <td>{{ event.title }}</td>
+                                        <td class="text-muted">
+                                            <template v-if="event.artist != 0">{{ event.artist }}</template>
+                                            <template v-else>Не указан</template>
+                                        </td>
+                                        <td class="text-muted">
+                                            <template v-if="event.event_date != null">{{ event.event_date }}</template>
+                                            <template v-if="event.event_time != null">, {{ event.event_time
+                                                }}</template>
+                                            <template v-if="event.event_time == null || event.event_time == ''">Не
+                                                указан</template>
+                                        </td>
+                                        <td class="text-muted">
+                                            <template v-if="event.status == 0">Добавлено</template>
+                                        </td>
+                                        <td>
+                                            <Link :href="'/events/view/' + event.id">Редактировать</Link>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <div class="row row-cards">
             <div class="col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Список событий</h3>
+                        <h3 class="card-title">Список одобренных событий или только что созданных событий</h3>
                     </div>
                     <div class="card-body p-0 m-0">
                         <div class="table-responsive">

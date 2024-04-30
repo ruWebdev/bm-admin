@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+use App\Models\User;
+
 use App\Models\News;
 
 class NewsController extends Controller
@@ -15,7 +17,13 @@ class NewsController extends Controller
 
         $data = array();
 
-        $data['news'] = News::where('user_id', auth()->user()->id)
+        $data['news_moderation'] = News::where('moderation_status', 1)
+            ->orWhere('moderation_status', 2)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        $data['news'] = News::where('moderation_status', 0)
+            ->orWhere('moderation_status', 3)
             ->orderBy('created_at', 'DESC')
             ->get();
 
@@ -30,9 +38,9 @@ class NewsController extends Controller
             [
                 'user_id' => auth()->user()->id,
                 'title' => $request->data['title'],
-                'enable' => 0,
-                'archive' => 0,
-                'moderation_status' => 0,
+                'enable_page' => 0,
+                'archived' => 0,
+                'moderation_status' => 3,
                 'status' => 0,
             ]
         );
@@ -58,9 +66,31 @@ class NewsController extends Controller
         $news->title = $request->title;
         $news->short_description = $request->short_description;
         $news->long_description = $request->long_description;
-        $news->external_page = $request->external_page;
+        $news->external_link = $request->external_link;
         $news->enable_page = $request->enable_page;
 
         $news->save();
+    }
+
+    public function acceptModeration($id)
+    {
+        $news = News::find($id);
+        $news->moderation_status = 3;
+        $news->save();
+
+        $user = User::find($news->user_id);
+
+        // Mail::to($user->email)->send(new ArtistModerationAccept());
+    }
+
+    public function denyModeration($id)
+    {
+        $news = News::find($id);
+        $news->moderation_status = 2;
+        $news->save();
+
+        $user = User::find($news->user_id);
+
+        // Mail::to($user->email)->send(new ArtistModerationDeny());
     }
 }
