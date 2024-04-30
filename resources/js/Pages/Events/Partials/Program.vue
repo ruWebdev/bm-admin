@@ -151,7 +151,7 @@ onMounted(async () => {
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" @click="closeProgrammModal()">Отменить</button>
                     <button type="button" class="btn btn-primary" @click="addProgramm()"
-                        :disabled="!programForm.composer || !programForm.title">Добавить</button>
+                        :disabled="!programForm.composer">Добавить</button>
                 </div>
             </div>
         </div>
