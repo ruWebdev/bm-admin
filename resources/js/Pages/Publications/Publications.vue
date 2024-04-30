@@ -16,6 +16,9 @@ import { ref, reactive, computed, onBeforeMount, onMounted } from 'vue';
 import ContentLayout from '@/Layouts/ContentLayout.vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 
+import ModerationStatusBadge from '@/Components/ModerationStatusBadge.vue';
+import StatusBadge from '@/Components/StatusBadge.vue';
+
 const props = defineProps(
     ["data"]
 );
@@ -108,10 +111,13 @@ onMounted(async () => {
                                     <tr v-for="publication in props.data.publications_moderation">
                                         <td>{{ publication.title }}</td>
                                         <td class="text-muted">
-
+                                            <StatusBadge :enabled="publication.enable_page"
+                                                :status="publication.moderation_status">
+                                            </StatusBadge>
                                         </td>
                                         <td class="text-muted">
-
+                                            <ModerationStatusBadge :status="publication.moderation_status">
+                                            </ModerationStatusBadge>
                                         </td>
                                         <td class="text-muted">
                                             {{ publication.page_views }}
@@ -149,10 +155,13 @@ onMounted(async () => {
                                     <tr v-for="publication in props.data.publications">
                                         <td>{{ publication.title }}</td>
                                         <td class="text-muted">
-
+                                            <StatusBadge :enabled="publication.enable_page"
+                                                :status="publication.moderation_status">
+                                            </StatusBadge>
                                         </td>
                                         <td class="text-muted">
-
+                                            <ModerationStatusBadge :status="publication.moderation_status">
+                                            </ModerationStatusBadge>
                                         </td>
                                         <td class="text-muted">
                                             {{ publication.page_views }}

@@ -17,6 +17,9 @@ import { ref, reactive, computed, onBeforeMount, onMounted } from 'vue';
 import ContentLayout from '@/Layouts/ContentLayout.vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 
+import ModerationStatusBadge from '@/Components/ModerationStatusBadge.vue';
+import StatusBadge from '@/Components/StatusBadge.vue';
+
 const props = defineProps(
     ["data"]
 );
@@ -98,7 +101,7 @@ onMounted(async () => {
                             <table class="table table-vcenter card-table">
                                 <thead>
                                     <tr>
-                                        <th>Имя, Фамилия</th>
+                                        <th>Название</th>
                                         <th>Подтвержденный пользователь</th>
                                         <th>Статус</th>
                                         <th>Модерация</th>
@@ -114,24 +117,12 @@ onMounted(async () => {
                                             <template v-else><span class="badge bg-green-lt">Да</span></template>
                                         </td>
                                         <td>
-                                            <template v-if="band.enable_page == 0"><span
-                                                    class="badge bg-red-lt">Страница
-                                                    не
-                                                    показываеся</span></template>
-                                            <template v-if="band.enable_page == 1"><span
-                                                    class="badge bg-azure-lt">Страница
-                                                    показываеся</span></template>
+                                            <StatusBadge :enabled="band.enable_page" :status="band.moderation_status">
+                                            </StatusBadge>
                                         </td>
                                         <td class="text-muted">
-                                            <template v-if="band.moderation_status == 0"><span
-                                                    class="badge bg-cyan-lt">Добавлено</span></template>
-                                            <template v-if="band.moderation_status == 1"><span
-                                                    class="badge bg-orange-lt">Запрос на
-                                                    модерацию</span></template>
-                                            <template v-if="band.moderation_status == 2"><span
-                                                    class="badge bg-red-lt">Отклонено</span></template>
-                                            <template v-if="band.moderation_status == 3"><span
-                                                    class="badge bg-green-lt">Модерация пройдена</span></template>
+                                            <ModerationStatusBadge :status="band.moderation_status">
+                                            </ModerationStatusBadge>
                                         </td>
                                         <td>
                                             <Link :href="'/bands/view/' + band.id">Просмотр</Link>
@@ -172,24 +163,12 @@ onMounted(async () => {
                                             <template v-else><span class="badge bg-green-lt">Да</span></template>
                                         </td>
                                         <td>
-                                            <template v-if="band.enable_page == 0"><span
-                                                    class="badge bg-red-lt">Страница
-                                                    не
-                                                    показываеся</span></template>
-                                            <template v-if="band.enable_page == 1"><span
-                                                    class="badge bg-azure-lt">Страница
-                                                    показываеся</span></template>
+                                            <StatusBadge :enabled="band.enable_page" :status="band.moderation_status">
+                                            </StatusBadge>
                                         </td>
                                         <td class="text-muted">
-                                            <template v-if="band.moderation_status == 0"><span
-                                                    class="badge bg-cyan-lt">Добавлено</span></template>
-                                            <template v-if="band.moderation_status == 1"><span
-                                                    class="badge bg-orange-lt">Запрос на
-                                                    модерацию</span></template>
-                                            <template v-if="band.moderation_status == 2"><span
-                                                    class="badge bg-red-lt">Отклонено</span></template>
-                                            <template v-if="band.moderation_status == 3"><span
-                                                    class="badge bg-green-lt">Модерация пройдена</span></template>
+                                            <ModerationStatusBadge :status="band.moderation_status">
+                                            </ModerationStatusBadge>
                                         </td>
                                         <td>
                                             <Link :href="'/bands/view/' + band.id">Просмотр</Link>

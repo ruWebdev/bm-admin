@@ -17,6 +17,9 @@ import { ref, reactive, computed, onBeforeMount, onMounted } from 'vue';
 import ContentLayout from '@/Layouts/ContentLayout.vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 
+import ModerationStatusBadge from '@/Components/ModerationStatusBadge.vue';
+import StatusBadge from '@/Components/StatusBadge.vue';
+
 const props = defineProps(
     ["data"]
 );
@@ -99,9 +102,9 @@ onMounted(async () => {
                                 <thead>
                                     <tr>
                                         <th>Навание</th>
-                                        <th>Исполнитель</th>
-                                        <th>Дата проведения</th>
                                         <th>Статус</th>
+                                        <th>Модерация</th>
+                                        <th>Просмотры</th>
                                         <th class="w-1"></th>
                                     </tr>
                                 </thead>
@@ -109,15 +112,12 @@ onMounted(async () => {
                                     <tr v-for="event in props.data.event_moderation">
                                         <td>{{ event.title }}</td>
                                         <td class="text-muted">
-                                            <template v-if="event.artist != 0">{{ event.artist }}</template>
-                                            <template v-else>Не указан</template>
+                                            <StatusBadge :enabled="event.enable_page" :status="event.moderation_status">
+                                            </StatusBadge>
                                         </td>
                                         <td class="text-muted">
-                                            <template v-if="event.event_date != null">{{ event.event_date }}</template>
-                                            <template v-if="event.event_time != null">, {{ event.event_time
-                                                }}</template>
-                                            <template v-if="event.event_time == null || event.event_time == ''">Не
-                                                указан</template>
+                                            <ModerationStatusBadge :status="event.moderation_status">
+                                            </ModerationStatusBadge>
                                         </td>
                                         <td class="text-muted">
                                             <template v-if="event.status == 0">Добавлено</template>
@@ -157,15 +157,12 @@ onMounted(async () => {
                                     <tr v-for="event in props.data.events">
                                         <td>{{ event.title }}</td>
                                         <td class="text-muted">
-                                            <template v-if="event.artist != 0">{{ event.artist }}</template>
-                                            <template v-else>Не указан</template>
+                                            <StatusBadge :enabled="event.enable_page" :status="event.moderation_status">
+                                            </StatusBadge>
                                         </td>
                                         <td class="text-muted">
-                                            <template v-if="event.event_date != null">{{ event.event_date }}</template>
-                                            <template v-if="event.event_time != null">, {{ event.event_time
-                                                }}</template>
-                                            <template v-if="event.event_time == null || event.event_time == ''">Не
-                                                указан</template>
+                                            <ModerationStatusBadge :status="event.moderation_status">
+                                            </ModerationStatusBadge>
                                         </td>
                                         <td class="text-muted">
                                             <template v-if="event.status == 0">Добавлено</template>

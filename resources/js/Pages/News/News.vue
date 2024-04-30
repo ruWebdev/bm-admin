@@ -17,6 +17,9 @@ import { ref, reactive, computed, onBeforeMount, onMounted } from 'vue';
 import ContentLayout from '@/Layouts/ContentLayout.vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 
+import ModerationStatusBadge from '@/Components/ModerationStatusBadge.vue';
+import StatusBadge from '@/Components/StatusBadge.vue';
+
 const props = defineProps(
     ["data"]
 );
@@ -109,16 +112,15 @@ onMounted(async () => {
                                     <tr v-for="news in props.data.news_moderation">
                                         <td>{{ news.title }}</td>
                                         <td class="text-muted">
-                                            <template v-if="news.artist != 0">{{ news.artist }}</template>
-                                            <template v-else>Не указан</template>
+                                            <StatusBadge :enabled="news.enable_page" :status="news.moderation_status">
+                                            </StatusBadge>
                                         </td>
                                         <td class="text-muted">
-                                            <template v-if="news.day != null">{{ news.day }} {{ news.month }} {{
-                                                news.year }}</template>
-                                            <template v-else>Не указан</template>
+                                            <ModerationStatusBadge :status="news.moderation_status">
+                                            </ModerationStatusBadge>
                                         </td>
                                         <td class="text-muted">
-                                            <template v-if="news.status == 0">Добавлено</template>
+                                            {{ news.page_views }}
                                         </td>
                                         <td>
                                             <Link :href="'/news/view/' + news.id">Редактировать</Link>
@@ -153,16 +155,15 @@ onMounted(async () => {
                                     <tr v-for="news in props.data.news">
                                         <td>{{ news.title }}</td>
                                         <td class="text-muted">
-                                            <template v-if="news.artist != 0">{{ news.artist }}</template>
-                                            <template v-else>Не указан</template>
+                                            <StatusBadge :enabled="news.enable_page" :status="news.moderation_status">
+                                            </StatusBadge>
                                         </td>
                                         <td class="text-muted">
-                                            <template v-if="news.day != null">{{ news.day }} {{ news.month }} {{
-                                                news.year }}</template>
-                                            <template v-else>Не указан</template>
+                                            <ModerationStatusBadge :status="news.moderation_status">
+                                            </ModerationStatusBadge>
                                         </td>
                                         <td class="text-muted">
-                                            <template v-if="news.status == 0">Добавлено</template>
+                                            {{ news.page_views }}
                                         </td>
                                         <td>
                                             <Link :href="'/news/view/' + news.id">Редактировать</Link>
