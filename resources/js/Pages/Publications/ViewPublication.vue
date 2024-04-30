@@ -85,12 +85,18 @@ async function denyModeration() {
 
 <template>
 
-    <Head title="Редактирование события" />
+    <Head title="Редактирование статьи" />
 
     <ContentLayout>
 
+        <template #BreadCrumbs>
+            <Link class="text-primary" href="/">Главная страница</Link> /
+            <Link class="text-primary" href="/ublications">Статьи</Link> /
+            Редактирование статьи
+        </template>
+
         <template #PageTitle>
-            Редактирование события
+            Редактирование статьи
         </template>
 
         <template #RightButtons>

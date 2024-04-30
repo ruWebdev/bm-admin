@@ -191,7 +191,9 @@ class BandController extends Controller
 
         $user = User::find($band->user_id);
 
-        Mail::to($user->email)->send(new BandModerationAccept());
+        if ($user) {
+            Mail::to($user->email)->send(new BandModerationAccept());
+        }
     }
 
     public function denyModeration($id)
@@ -202,6 +204,8 @@ class BandController extends Controller
 
         $user = User::find($band->user_id);
 
-        Mail::to($user->email)->send(new BandModerationDeny());
+        if ($user) {
+            Mail::to($user->email)->send(new BandModerationDeny());
+        }
     }
 }

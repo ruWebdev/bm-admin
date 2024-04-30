@@ -196,7 +196,7 @@ function dismissNotification(index) {
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    Публикации
+                                    Статьи
                                 </span>
                                 </Link>
                             </li>

@@ -91,7 +91,7 @@ onMounted(async () => {
             <div class="col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Список одобренных событий или только что созданных событий</h3>
+                        <h3 class="card-title">Список событий, нуждающихся в модерации</h3>
                     </div>
                     <div class="card-body p-0 m-0">
                         <div class="table-responsive">

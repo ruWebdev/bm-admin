@@ -154,7 +154,9 @@ class ArtistController extends Controller
 
         $user = User::find($artist->user_id);
 
-        Mail::to($user->email)->send(new ArtistModerationAccept());
+        if ($user) {
+            Mail::to($user->email)->send(new ArtistModerationAccept());
+        }
     }
 
     public function denyModeration($id)
@@ -165,6 +167,8 @@ class ArtistController extends Controller
 
         $user = User::find($artist->user_id);
 
-        Mail::to($user->email)->send(new ArtistModerationDeny());
+        if ($user) {
+            Mail::to($user->email)->send(new ArtistModerationDeny());
+        }
     }
 }

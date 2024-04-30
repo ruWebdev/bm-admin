@@ -178,11 +178,6 @@ async function denyModeration() {
 
         <div class="row row-cards">
             <div class="col-md-12 col-lg-12">
-                <div class="col-md-12 col-lg-12">
-                    <ModerationStatusAlert :status="props.data.band.moderation_status"
-                        :enabled="mainInfoForm.enable_page">
-                    </ModerationStatusAlert>
-                </div>
                 <div class="card">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">

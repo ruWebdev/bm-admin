@@ -62,17 +62,17 @@ onMounted(async () => {
 
 <template>
 
-    <Head title="Публикации" />
+    <Head title="Статьи" />
 
     <ContentLayout>
 
         <template #BreadCrumbs>
             <Link class="text-primary" href="/">Главная страница</Link> /
-            Публикации
+            Статьи
         </template>
 
         <template #PageTitle>
-            Публикации
+            Статьи
         </template>
 
         <template #RightButtons>
@@ -83,14 +83,55 @@ onMounted(async () => {
                     <path d="M12 5l0 14" />
                     <path d="M5 12l14 0" />
                 </svg>
-                Добавить публикацию
+                Добавить статью
             </a>
         </template>
         <div class="row row-cards">
             <div class="col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Список публикаций</h3>
+                        <h3 class="card-title">Список статей, нуждающихся в модерации</h3>
+                    </div>
+                    <div class="card-body p-0 m-0">
+                        <div class="table-responsive">
+                            <table class="table table-vcenter card-table">
+                                <thead>
+                                    <tr>
+                                        <th>Заголовок</th>
+                                        <th>Статус</th>
+                                        <th>Модерация</th>
+                                        <th>Просмотры</th>
+                                        <th class="w-1"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="publication in props.data.publications_moderation">
+                                        <td>{{ publication.title }}</td>
+                                        <td class="text-muted">
+
+                                        </td>
+                                        <td class="text-muted">
+
+                                        </td>
+                                        <td class="text-muted">
+                                            {{ publication.page_views }}
+                                        </td>
+                                        <td>
+                                            <Link :href="'/publications/view/' + publication.id">Редактировать</Link>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Список одобренных статей или только что добавленных статей</h3>
                     </div>
                     <div class="card-body p-0 m-0">
                         <div class="table-responsive">
@@ -134,7 +175,7 @@ onMounted(async () => {
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Добавление публикации</h5>
+                        <h5 class="modal-title">Добавление статьи</h5>
                         <button type="button" class="btn-close" @click="closeNewPublicationModal()"></button>
                     </div>
                     <div class="modal-body">
@@ -154,7 +195,7 @@ onMounted(async () => {
                     <div class="modal-footer">
                         <button type="button" class="btn me-auto" @click="closeNewPublicationModal()">Отменить</button>
                         <button type="button" class="btn btn-primary" @click="createNewPublication()">Создать
-                            публикацию</button>
+                            статью</button>
                     </div>
                 </div>
             </div>

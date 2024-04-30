@@ -20,7 +20,14 @@ class PublicationController extends Controller
 
         $data = array();
 
-        $data['publications'] = Publication::orderBy('created_at', 'DESC')
+        $data['publications_moderation'] = Publication::where('moderation_status', 1)
+            ->orWhere('moderation_status', 2)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        $data['publications'] = Publication::where('moderation_status', 0)
+            ->orWhere('moderation_status', 3)
+            ->orderBy('created_at', 'DESC')
             ->get();
 
 
