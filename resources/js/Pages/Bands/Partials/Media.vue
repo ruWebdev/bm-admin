@@ -28,7 +28,7 @@ function openPhotoModal(type) {
         };
     } else if (imgType.value == 'page_photo') {
         ratio.value = {
-            aspectRatio: 12 / 16
+            aspectRatio: 16 / 9
         };
     } else if (imgType.value == 'additional_photo') {
         ratio.value = {
