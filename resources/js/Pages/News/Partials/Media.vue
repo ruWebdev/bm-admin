@@ -114,7 +114,7 @@ onMounted(async () => {
                 <div class="card-body p-0 text-center">
 
                     <img style="width: 240px;" class="p-2"
-                        :src="'http://baroquemusic.test/storage/' + props.news.main_photo">
+                        :src="'https://baroquemusic.ru/storage/' + props.news.main_photo">
 
                 </div>
             </div>
@@ -139,7 +139,7 @@ onMounted(async () => {
                 </div>
                 <div class="card-body p-0 text-center">
                     <img style="width: 240px;" class="p-2"
-                        :src="'http://baroquemusic.test/storage/' + props.news.page_photo">
+                        :src="'https://baroquemusic.ru/storage/' + props.news.page_photo">
 
                 </div>
             </div>
