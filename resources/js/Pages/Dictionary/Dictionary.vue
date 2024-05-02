@@ -51,6 +51,15 @@ async function createNewDictionary() {
     }
 }
 
+async function deleteItem(id, index) {
+    try {
+        await axios.post('/dictionary/delete', { id: id });
+        props.data.dictionary.splice(index, 1);
+    } catch (e) {
+
+    }
+}
+
 onMounted(async () => {
     state.newDictionaryModal = new bootstrap.Modal(document.getElementById('newDictionaryModal'), {});
 });
@@ -97,13 +106,19 @@ onMounted(async () => {
                                     <tr>
                                         <th>Название</th>
                                         <th class="w-1"></th>
+                                        <th class="w-1"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="dictionary in props.data.dictionary">
+                                    <tr v-for="dictionary, index in props.data.dictionary">
                                         <td>{{ dictionary.title }}</td>
                                         <td>
                                             <Link :href="'/dictionary/view/' + dictionary.id">Редактировать</Link>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-link text-danger"
+                                                @click="deleteItem(dictionary.id, index)">
+                                                Удалить</button>
                                         </td>
                                     </tr>
 

@@ -59,4 +59,11 @@ class DictionaryController extends Controller
 
         $dictionary->save();
     }
+
+    public function deleteDictionary(Request $request)
+    {
+        if ($request->id) {
+            Dictionary::where('id', $request->id)->delete();
+        }
+    }
 }

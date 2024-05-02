@@ -115,17 +115,6 @@ async function sendToModeration() {
                 </svg>
                 Сохранить изменения
             </button>
-            <button :disabled="props.data.dictionary.moderation_status == 1" class="btn btn-info"
-                @click="checkForModeration()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-checkbox">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M9 11l3 3l8 -8" />
-                    <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
-                </svg>
-                Отправить событие на модерацию
-            </button>
         </template>
 
         <div class="row row-cards">
@@ -137,9 +126,6 @@ async function sendToModeration() {
                             <li class="nav-item">
                                 <a href="#tabs-home" class="nav-link active" data-bs-toggle="tab">Основная
                                     информация</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#tabs-media" class="nav-link" data-bs-toggle="tab">Изображения и видео</a>
                             </li>
                             <li class="nav-item">
                                 <a href="#tabs-settings" class="nav-link" data-bs-toggle="tab">Управление</a>

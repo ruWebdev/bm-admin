@@ -165,6 +165,8 @@ Route::controller(DictionaryController::class)->middleware(['auth', 'verified'])
         Route::post('/dictionary/create', 'createDictionary')->name('dictionary.create'); // Отправная точка        
         Route::post('/dictionary/save_changes/{id}', 'updateDictionary')->name('dictionary.update'); // Отправная точка    
 
+        Route::post('/dictionary/delete', 'deleteDictionary')->name('dictionary.delete'); // Отправная точка    
+
     }
 );
 
