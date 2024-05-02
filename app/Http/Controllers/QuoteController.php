@@ -50,9 +50,16 @@ class QuoteController extends Controller
         $quote = Quote::find($id);
 
         $quote->author = $request->author;
-        $quote->title = $request->title;        
-        $quote->long_description = $request->long_description;       
+        $quote->title = $request->title;
+        $quote->long_description = $request->long_description;
 
         $quote->save();
+    }
+
+    public function deleteQuote(Request $request)
+    {
+        if ($request->id) {
+            Quote::where('id', $request->id)->delete();
+        }
     }
 }

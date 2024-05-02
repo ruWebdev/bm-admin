@@ -187,7 +187,9 @@ Route::controller(QuoteController::class)->middleware(['auth', 'verified'])->gro
 
         Route::get('/quotes/view/{id}', 'viewQuote')->name('quotes.view'); // Отправная точка        
         Route::post('/quotes/create', 'createQuote')->name('quotes.create'); // Отправная точка        
-        Route::post('/quotes/save_changes/{id}', 'updateQuote')->name('quotes.update'); // Отправная точка        
+        Route::post('/quotes/save_changes/{id}', 'updateQuote')->name('quotes.update'); // Отправная точка   
+
+        Route::post('/quotes/delete', 'deleteQuote')->name('quotes.delete'); // Отправная точка    
     }
 );
 

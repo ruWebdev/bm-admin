@@ -53,6 +53,15 @@ async function createNewQuote() {
     }
 }
 
+async function deleteItem(id, index) {
+    try {
+        await axios.post('/quotes/delete', { id: id });
+        props.data.quotes.splice(index, 1);
+    } catch (e) {
+
+    }
+}
+
 onMounted(async () => {
     state.newQuoteModal = new bootstrap.Modal(document.getElementById('newQuoteModal'), {});
 });
@@ -95,6 +104,7 @@ onMounted(async () => {
                                         <th>Автор</th>
                                         <th>Заголовок</th>
                                         <th class="w-1"></th>
+                                        <th class="w-1"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -103,6 +113,11 @@ onMounted(async () => {
                                         <td>{{ quote.title }}</td>
                                         <td>
                                             <Link :href="'/quotes/view/' + quote.id">Редактировать</Link>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-link text-danger"
+                                                @click="deleteItem(quote.id, index)">
+                                                Удалить</button>
                                         </td>
                                     </tr>
 
