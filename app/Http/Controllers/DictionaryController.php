@@ -51,6 +51,8 @@ class DictionaryController extends Controller
         $dictionary = Dictionary::find($id);
 
         $dictionary->title = $request->title;
+        $dictionary->origin_language = $request->origin_language;
+        $dictionary->transcription = $request->transcription;
         $dictionary->short_description = $request->short_description;
         $dictionary->long_description = $request->long_description;
         $dictionary->external_link = $request->external_link;

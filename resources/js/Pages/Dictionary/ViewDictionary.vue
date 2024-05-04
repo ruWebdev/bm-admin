@@ -38,6 +38,8 @@ const props = defineProps(['data']);
 const mainInfoForm = ref({
     page_alias: props.data.dictionary.page_alias,
     title: props.data.dictionary.title,
+    origin_language: props.data.dictionary.origin_language,
+    transcription: props.data.dictionary.transcription,
     short_description: props.data.dictionary.short_description,
     long_description: props.data.dictionary.long_description,
     external_link: props.data.dictionary.external_link,
@@ -136,7 +138,7 @@ async function sendToModeration() {
                         <div class="tab-content">
                             <div class="tab-pane active show" id="tabs-home">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Название музыкального термина <span
                                                     class="text-danger">*</span></label>
@@ -145,19 +147,39 @@ async function sendToModeration() {
                                                 @keyup="translitTitle()">
                                         </div>
                                     </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label">Обозначение языка БЕЗ СКОБОК, например "Ит" <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="example-text-input"
+                                                placeholder="Не заполнено" v-model="mainInfoForm.origin_language"
+                                                @keyup="translitTitle()">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label">Транскрипция БЕЗ СКОБОК <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="example-text-input"
+                                                placeholder="Не заполнено" v-model="mainInfoForm.transcription"
+                                                @keyup="translitTitle()">
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Краткое описание для карточки в каталоге (не более
-                                                100
+                                            <label class="form-label">Краткое описание, если нет длинного описания для
+                                                карточки
+                                                в каталоге (не более
+                                                150
                                                 символов, без точки в конце) <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="example-text-input"
-                                                placeholder="Не заполнено" maxlength="100"
+                                                placeholder="Не заполнено" maxlength="150"
                                                 v-model="mainInfoForm.short_description">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Подробное описание <span
+                                            <label class="form-label">Подробное описание, если текст длинный <span
                                                     class="text-danger">*</span></label>
                                             <ckeditor :editor="editor" v-model="mainInfoForm.long_description"
                                                 :config="editorConfig">

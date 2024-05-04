@@ -19,6 +19,8 @@ class Dictionary extends Model
     protected $fillable = [
         'page_alias',
         'title',
+        'origin_language',
+        'transcription',
         'short_description',
         'long_description',
         'main_photo',
