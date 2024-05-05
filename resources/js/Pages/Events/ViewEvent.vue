@@ -51,6 +51,7 @@ const mainInfoForm = ref({
     external_link: props.data.event.external_link,
     enable_page: props.data.event.enable_page,
     sold_out: props.data.event.sold_out,
+    featured: props.data.event.featured,
 })
 
 function translitTitle() {
@@ -310,6 +311,16 @@ async function denyModeration() {
                                                     :checked="mainInfoForm.sold_out">
                                                 <span class="form-check-label">Указать, что все билеты на мероприятие
                                                     проданы</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox"
+                                                    v-model="mainInfoForm.featured" @click="checkboxToggle('featured')"
+                                                    :checked="mainInfoForm.featured">
+                                                <span class="form-check-label">Поместить в избранные мероприятия</span>
                                             </label>
                                         </div>
                                     </div>

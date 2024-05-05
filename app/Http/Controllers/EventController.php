@@ -113,6 +113,7 @@ class EventController extends Controller
         $event->external_link = $request->external_link;
         $event->enable_page = $request->enable_page;
         $event->sold_out = $request->sold_out;
+        $event->featured = $request->featured;
 
         $event->save();
     }

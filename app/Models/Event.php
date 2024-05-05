@@ -36,6 +36,7 @@ class Event extends Model
         'enable_page',
         'moderation_status',
         'archived',
+        'featured',
         'main_photo',
         'page_photo',
         'tags',
@@ -45,6 +46,7 @@ class Event extends Model
     protected $casts = [
         'enable_page' => 'boolean',
         'sold_out' => 'boolean',
+        'featured' => 'boolean'
     ];
 
     public function program(): HasMany
