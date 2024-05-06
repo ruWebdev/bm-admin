@@ -42,6 +42,8 @@ const mainInfoForm = ref({
     long_description: props.data.news.long_description,
     enable_page: props.data.news.enable_page,
     external_link: props.data.news.external_link,
+    video_type: props.data.news.video_type,
+    video_code: props.data.news.video_code,
 })
 
 function translitTitle() {
@@ -198,6 +200,24 @@ async function denyModeration() {
                             </div>
                             <div class="tab-pane" id="tabs-media">
                                 <Media :news="props.data.news"></Media>
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <hr />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Тип видео плеера</label>
+                                        <select class="form-select" v-model="mainInfoForm.video_type">
+                                            <option value="none">Выключить видео</option>
+                                            <option value="youtube">YouTube</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Код</label>
+                                        <input type="text" class="form-control" name="example-text-input"
+                                            placeholder="Не заполнено" maxlength="100"
+                                            v-model="mainInfoForm.video_code">
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane" id="tabs-settings">
                                 <div class="row">

@@ -26,6 +26,8 @@ class News extends Model
         'moderation_status',
         'enable_page',
         'external_link',
+        'video_type',
+        'video_code',
         'user_id',
         'page_views',
     ];

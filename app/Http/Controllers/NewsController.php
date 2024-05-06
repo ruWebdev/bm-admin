@@ -68,6 +68,8 @@ class NewsController extends Controller
         $news->long_description = $request->long_description;
         $news->external_link = $request->external_link;
         $news->enable_page = $request->enable_page;
+        $news->video_type = $request->video_type;
+        $news->video_code = $request->video_code;
 
         $news->save();
     }
