@@ -204,6 +204,7 @@ async function denyModeration() {
                                     <div class="col-md-12 mb-3">
                                         <hr />
                                     </div>
+
                                     <div class="col-md-6">
                                         <label class="form-label">Тип видео плеера</label>
                                         <select class="form-select" v-model="mainInfoForm.video_type">
