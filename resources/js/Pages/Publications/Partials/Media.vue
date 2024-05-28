@@ -96,7 +96,7 @@ onMounted(async () => {
         <div class="col-md-6 mb-3">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Изображение в списке новостей</h3>
+                    <h3 class="card-title">Изображение в списке статей</h3>
                     <div class="card-actions">
                         <button :disabled="props.publication.moderation_status == 1"
                             @click="openPhotoModal('main_photo')" class="btn btn-primary">
@@ -114,7 +114,7 @@ onMounted(async () => {
                 <div class="card-body p-0 text-center">
 
                     <img style="width: 240px;" class="p-2"
-                        :src="'http://baroquemusic.test/storage/' + props.publication.main_photo">
+                        :src="'https://baroquemusic.ru/storage/' + props.publication.main_photo">
 
                 </div>
             </div>
@@ -122,7 +122,7 @@ onMounted(async () => {
         <div class="col-md-6 mb-3">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Изображение на странице новости</h3>
+                    <h3 class="card-title">Изображение на странице статьи</h3>
                     <div class="card-actions">
                         <button :disabled="props.publication.moderation_status == 1"
                             @click="openPhotoModal('page_photo')" class="btn btn-primary">
@@ -139,7 +139,7 @@ onMounted(async () => {
                 </div>
                 <div class="card-body p-0 text-center">
                     <img style="width: 240px;" class="p-2"
-                        :src="'http://baroquemusic.test/storage/' + props.publication.page_photo">
+                        :src="'https://baroquemusic.ru/storage/' + props.publication.page_photo">
 
                 </div>
             </div>
