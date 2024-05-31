@@ -32,5 +32,8 @@ class Composer extends Model
         'page_photo',
         'short_description',
         'long_description',
+        'imslp_link',
+        'video_type',
+        'video_code',
     ];
 }

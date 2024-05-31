@@ -89,6 +89,9 @@ class ComposerController extends Controller
         $composer->death_date = $request->death_date;
         $composer->short_description = $request->short_description;
         $composer->long_description = $request->long_description;
+        $composer->imslp_link = $request->imslp_link;
+        $composer->video_type = $request->video_type;
+        $composer->video_code = $request->video_code;
         $composer->page_alias = $request->page_alias;
         $composer->enabled = true;
 

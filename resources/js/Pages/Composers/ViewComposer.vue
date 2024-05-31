@@ -129,6 +129,9 @@ const mainComposerForm = ref({
     death_date: props.data.composer.death_date,
     short_description: props.data.composer.short_description,
     long_description: props.data.composer.long_description,
+    imslp_link: props.data.composer.imslp_link,
+    video_type: props.data.composer.video_type,
+    video_code: props.data.composer.video_code,
     page_alias: props.data.composer.page_alias,
 })
 
@@ -294,6 +297,30 @@ onMounted(async () => {
                                                 :config="editorConfig">
                                             </ckeditor>
 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Ссылка на архив IMSLP</label>
+                                            <input type="text" class="form-control" name="example-text-input"
+                                                placeholder="Не заполнено" maxlength="100"
+                                                v-model="mainComposerForm.imslp_link">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Видео: Тип</label>
+                                            <select class="form-select" v-model="mainComposerForm.video_type">
+                                                <option value="youtube" selected>Youtube</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Видео: Код ролика</label>
+                                            <input type="text" class="form-control" name="example-text-input"
+                                                placeholder="Не заполнено" maxlength="100"
+                                                v-model="mainComposerForm.video_code">
                                         </div>
                                     </div>
                                     <div class="col-md-12">

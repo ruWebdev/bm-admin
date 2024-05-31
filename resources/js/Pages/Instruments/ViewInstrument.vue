@@ -146,7 +146,7 @@ onMounted(async () => {
 
 <template>
 
-    <Head title="Редактирование композитора" />
+    <Head title="Редактирование музыкального инструмента" />
 
     <ContentLayout>
 
@@ -157,7 +157,7 @@ onMounted(async () => {
         </template>
 
         <template #PageTitle>
-            Редактирование композитора
+            Редактирование музыкального инструмента
         </template>
 
         <template #RightButtons>
@@ -219,7 +219,7 @@ onMounted(async () => {
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Подробная биография</label>
+                                            <label class="form-label">Подробное описание</label>
                                             <ckeditor :editor="editor" v-model="mainInstrumentForm.long_description"
                                                 :config="editorConfig">
                                             </ckeditor>
