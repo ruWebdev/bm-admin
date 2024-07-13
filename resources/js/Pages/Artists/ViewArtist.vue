@@ -332,7 +332,7 @@ onMounted(async () => {
                                     </div>
                                     <div class="col-md-8">
                                         <div class="mb-3">
-                                            <label class="form-label">Инструменты, на которых исполнитель <span
+                                            <label class="form-label">Инструменты, на которых играет исполнитель <span
                                                     class="text-danger">*</span></label>
 
                                             <Multiselect v-model="mainInfoForm.musical_instruments" mode="tags"
