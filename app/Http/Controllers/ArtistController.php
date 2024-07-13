@@ -49,19 +49,17 @@ class ArtistController extends Controller
     public function createArtist(Request $request)
     {
 
-        Artist::create([
-            'last_name' => $request->last_name,
-            'first_name' => $request->first_name,
+        $artist = Artist::create([
+            'last_name' => $request->data['last_name'],
+            'first_name' => $request->data['first_name'],
+            'middle_name' => $request->data['middle_name'],
             'user_id' => auth()->user()->id,
+            'main_photo' => 'artists/no-artist-image.jpg',
             'enable_page' => false,
             'moderation_status' => 3,
         ]);
 
-        $user = User::find(auth()->user()->id);
-        $user->is_connected_to_artist = true;
-        $user->save();
-
-        return response('success');
+        return response()->json($artist);
     }
 
     public function createArtistFromSelect(Request $request)

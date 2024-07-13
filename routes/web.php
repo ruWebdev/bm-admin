@@ -40,7 +40,9 @@ Route::controller(DashboardController::class)->middleware(['auth', 'verified'])-
 
 Route::controller(ArtistController::class)->middleware(['auth', 'verified'])->group(
     function () {
-        Route::get('/artists', 'index')->name('artists'); // Отправная точка       
+        Route::get('/artists', 'index')->name('artists'); // Отправная точка   
+
+        Route::post('/artists/create', 'createArtist')->name('artists.create'); // Отправная точка       
 
         Route::get('/artists/view/{id}', 'viewArtist')->name('artists.view'); // Отправная точка       
         Route::post('/artists/save_changes/{id}', 'updateArtist')->name('artist.update'); // Отправная точка  
@@ -211,6 +213,7 @@ Route::controller(UploadController::class)->middleware(['auth', 'verified'])->gr
         Route::post('/upload/news_photo/{id}/delete', 'deleteNewsPhoto')->name('uploads.delete_news_photo'); // Отправная точка        
 
         Route::post('/upload/publication_photo/{id}', 'uploadPublicationPhoto')->name('uploads.publication_photo');
+        Route::post('/upload/publication_photo/upload_image/{id}', 'uploadInternalPublicationPhoto')->name('uploads.upload_publication_photo');
         Route::post('/upload/publication_photo/{id}/delete', 'deletePublicationPhoto')->name('uploads.delete_publication_photo');
 
         Route::post('/upload/dictionary_photo/{id}', 'uploadDictionaryPhoto')->name('uploads.dictionary_photo');

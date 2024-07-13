@@ -98,6 +98,7 @@ const mainInfoForm = ref({
     long_description: props.data.artist.long_description,
     show_birth_place: props.data.artist.show_birth_place,
     show_birth_date: props.data.artist.show_birth_date,
+    moderation_status: props.data.artist.moderation_status,
     enable_page: props.data.artist.enable_page,
 })
 
@@ -210,6 +211,7 @@ async function denyModeration() {
 
 onMounted(async () => {
     state.photoModal = new bootstrap.Modal(document.getElementById('photoModal'), {});
+    translitTitle()
 });
 
 
@@ -243,7 +245,8 @@ onMounted(async () => {
                 </svg>
                 Сохранить изменения
             </button>
-            <button class="btn btn-danger d-none d-sm-inline-block me-2" @click="denyModeration()">
+            <button class="btn btn-danger d-none d-sm-inline-block me-2" @click="denyModeration()"
+                v-if="mainInfoForm.moderation_status != 3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-circle-off">
@@ -253,7 +256,8 @@ onMounted(async () => {
                 </svg>
                 Отклонить
             </button>
-            <button class="btn btn-success d-none d-sm-inline-block" @click="acceptModeration()">
+            <button class="btn btn-success d-none d-sm-inline-block" @click="acceptModeration()"
+                v-if="mainInfoForm.moderation_status != 3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-checkbox">
@@ -328,7 +332,7 @@ onMounted(async () => {
                                     </div>
                                     <div class="col-md-8">
                                         <div class="mb-3">
-                                            <label class="form-label">Инструменты, на которых вы играете <span
+                                            <label class="form-label">Инструменты, на которых исполнитель <span
                                                     class="text-danger">*</span></label>
 
                                             <Multiselect v-model="mainInfoForm.musical_instruments" mode="tags"
@@ -346,7 +350,7 @@ onMounted(async () => {
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Краткая информация о себе <span
+                                            <label class="form-label">Краткая информация об исполнителе <span
                                                     class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="example-text-input"
                                                 placeholder="Не заполнено" v-model="mainInfoForm.short_description">
@@ -430,7 +434,7 @@ onMounted(async () => {
                                                     v-model="mainInfoForm.enable_page"
                                                     @click="checkboxToggle('enable_page')"
                                                     :checked="mainInfoForm.enable_page">
-                                                <span class="form-check-label">Показывать мою страницу на сайте
+                                                <span class="form-check-label">Показывать страницу на сайте
                                                     BaroqueMusic.ru</span>
                                             </label>
                                         </div>
@@ -457,7 +461,7 @@ onMounted(async () => {
                                                     v-model="mainInfoForm.show_birth_date"
                                                     @click="checkboxToggle('show_birth_date')"
                                                     :checked="mainInfoForm.show_birth_date">
-                                                <span class="form-check-label">Показывать мои день рождения и
+                                                <span class="form-check-label">Показывать день рождения и
                                                     возраст</span>
                                             </label>
                                             <label class="form-check form-switch">
@@ -465,7 +469,7 @@ onMounted(async () => {
                                                     v-model="mainInfoForm.show_birth_place"
                                                     @click="checkboxToggle('show_birth_place')"
                                                     :checked="mainInfoForm.show_birth_place">
-                                                <span class="form-check-label">Показывать моё место рождения</span>
+                                                <span class="form-check-label">Показывать место рождения</span>
                                             </label>
                                         </div>
                                     </div>

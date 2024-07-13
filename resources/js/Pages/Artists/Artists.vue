@@ -31,12 +31,16 @@ const state = reactive({
 });
 
 const newNewsForm = ref({
-    title: null
+    last_name: null,
+    first_name: null,
+    middle_name: null,
 });
 
 function openNewNewsModal() {
     newNewsForm.value = {
-        title: null
+        last_name: null,
+        first_name: null,
+        middle_name: null,
     }
     state.newNewsModal.show();
 }
@@ -47,11 +51,11 @@ function closeNewNewsModal() {
 
 async function createNewNews() {
     try {
-        const result = await axios.post('/news/create', {
+        const result = await axios.post('/artists/create', {
             data: newNewsForm.value,
         });
         closeNewNewsModal();
-        props.data.news.push(result.data);
+        props.data.artists.push(result.data);
     } catch (e) {
 
     }
@@ -190,26 +194,38 @@ onMounted(async () => {
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Добавление новости</h5>
+                        <h5 class="modal-title">Добавление нового исполнителя</h5>
                         <button type="button" class="btn-close" @click="closeNewNewsModal()"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label class="form-label">Заголовок</label>
+                                    <label class="form-label">Фамилия</label>
                                     <input type="text" class="form-control" name="example-text-input"
-                                        placeholder="Заполните поле" v-model="newNewsForm.title">
+                                        placeholder="Заполните поле" v-model="newNewsForm.last_name">
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <p><small>Заголовок будет отображаться на страницах сайта</small></p>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Имя</label>
+                                    <input type="text" class="form-control" name="example-text-input"
+                                        placeholder="Заполните поле" v-model="newNewsForm.first_name">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Отчество</label>
+                                    <input type="text" class="form-control" name="example-text-input"
+                                        placeholder="Заполните поле" v-model="newNewsForm.middle_name">
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn me-auto" @click="closeNewNewsModal()">Отменить</button>
-                        <button type="button" class="btn btn-primary" @click="createNewNews()">Создать новость</button>
+                        <button type="button" class="btn btn-primary" @click="createNewNews()">Создать
+                            исполнителя</button>
                     </div>
                 </div>
             </div>

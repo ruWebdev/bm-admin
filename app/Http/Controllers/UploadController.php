@@ -304,6 +304,34 @@ class UploadController extends Controller
         return response()->json($result);
     }
 
+    public function uploadInternalPublicationPhoto($id, Request $request)
+    {
+
+        $manager = new ImageManager(new Driver());
+
+        $file = $request->file('upload');
+        $img = $manager->read($file->path());
+
+        $destinationPath = 'publications/' . $id . '/photo/';
+        $fileName = rand() . ".jpg";
+
+        if ($request->type == 'main_photo') {
+            $img->scale(width: 300);
+        } else {
+            $img->scale(width: 900);
+        }
+
+        $finalImage = $img->toJpeg(90);
+
+        $path = Storage::disk('public')->put($destinationPath . $fileName, $finalImage);
+
+        $result = array();
+
+        $result['url'] = 'http://baroquemusic.test/storage/' . $destinationPath . $fileName;
+
+        return response()->json($result);
+    }
+
     public function uploadComposerPhoto($id, Request $request)
     {
 
