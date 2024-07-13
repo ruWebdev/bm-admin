@@ -25,7 +25,7 @@ class Publication extends Model
         'page_photo',
         'moderation_status',
         'enable_page',
-        'user_id',
+        'artist_id',
         'page_views'
     ];
 }

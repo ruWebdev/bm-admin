@@ -10,6 +10,7 @@ use App\Mail\PublicationModerationDeny;
 use Illuminate\Support\Facades\Mail;
 
 use App\Models\User;
+use App\Models\Artist;
 use App\Models\Publication;
 
 class PublicationController extends Controller
@@ -57,6 +58,10 @@ class PublicationController extends Controller
 
         $data['publication'] = Publication::find($id);
 
+        $data['artists'] = Artist::orderBy('last_name', 'ASC')
+            ->orderBy('first_name', 'ASC')
+            ->get();
+
         return Inertia::render('Publications/ViewPublication', ['data' => $data]);
     }
 
@@ -65,6 +70,7 @@ class PublicationController extends Controller
         $publication = Publication::find($id);
 
         $publication->page_alias = $request->page_alias;
+        $publication->artist_id = $request->artist_id;
         $publication->title = $request->title;
         $publication->short_description = $request->short_description;
         $publication->long_description = $request->long_description;
@@ -79,9 +85,9 @@ class PublicationController extends Controller
         $publication->moderation_status = 3;
         $publication->save();
 
-        $user = User::find($publication->user_id);
+        // $user = User::find($publication->user_id);
 
-        Mail::to($user->email)->send(new PublicationModerationAccept());
+        // Mail::to($user->email)->send(new PublicationModerationAccept());
     }
 
     public function denyModeration($id)

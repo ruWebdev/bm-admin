@@ -135,7 +135,7 @@ const MyCustomUploadAdapterPlugin = function (editor) {
 const editor = ClassicEditor
 const ckeditor = CKEditor.component
 const editorConfig = {
-    toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'uploadImage'],
+    toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
     extraPlugins: [MyCustomUploadAdapterPlugin],
 
 }
@@ -148,6 +148,7 @@ const publicationId = props.data.publication.id;
 
 const mainInfoForm = ref({
     page_alias: props.data.publication.page_alias,
+    artist_id: props.data.publication.artist_id,
     title: props.data.publication.title,
     short_description: props.data.publication.short_description,
     long_description: props.data.publication.long_description,
@@ -174,8 +175,8 @@ async function saveChanges() {
 
 async function acceptModeration() {
     try {
-        await axios.post('/publications/accept_moderation/' + props.data.artist.id)
-        props.data.artist.moderation_status = 3;
+        await axios.post('/publications/accept_moderation/' + props.data.publication.id)
+        props.data.publication.moderation_status = 3;
         toast.success("Страница подтверждена");
     } catch (e) {
         toast.warning("Ой, что-то пошло не так... Скоро исправимся!");
@@ -184,8 +185,8 @@ async function acceptModeration() {
 
 async function denyModeration() {
     try {
-        await axios.post('/publications/deny_moderation/' + props.data.artist.id)
-        props.data.artist.moderation_status = 2;
+        await axios.post('/publications/deny_moderation/' + props.data.publication.id)
+        props.data.publication.moderation_status = 2;
         toast.success("Страница отклонена");
     } catch (e) {
         toast.warning("Ой, что-то пошло не так... Скоро исправимся!");
@@ -222,7 +223,8 @@ async function denyModeration() {
                 </svg>
                 Сохранить изменения
             </button>
-            <button class="btn btn-danger d-none d-sm-inline-block me-2" @click="denyModeration()">
+            <button v-if="props.data.publication.moderation_status != 3"
+                class="btn btn-danger d-none d-sm-inline-block me-2" @click="denyModeration()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-circle-off">
@@ -232,7 +234,8 @@ async function denyModeration() {
                 </svg>
                 Отклонить
             </button>
-            <button class="btn btn-success d-none d-sm-inline-block" @click="acceptModeration()">
+            <button v-if="props.data.publication.moderation_status != 3"
+                class="btn btn-success d-none d-sm-inline-block" @click="acceptModeration()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-checkbox">
@@ -267,6 +270,19 @@ async function denyModeration() {
                         <div class="tab-content">
                             <div class="tab-pane active show" id="tabs-home">
                                 <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Автор статьи (если нет в списке, необходимо
+                                                добавить
+                                                сначала в исполнителей). <span class="text-danger">*</span></label>
+                                            <select class="form-select" v-model="mainInfoForm.artist_id">
+                                                <option value="">Выберите исполнителя</option>
+                                                <option :value="artist.id" v-for="artist in data.artists">{{
+                                                    artist.last_name
+                                                }}, {{ artist.first_name }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Заголовок <span
