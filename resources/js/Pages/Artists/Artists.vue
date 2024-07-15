@@ -56,6 +56,13 @@ async function createNewNews() {
         });
         closeNewNewsModal();
         props.data.artists.push(result.data);
+
+        props.data.artists.sort(function (a, b) {
+            var textA = a.title.toUpperCase();
+            var textB = b.title.toUpperCase();
+            return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+        });
+
     } catch (e) {
 
     }
@@ -114,7 +121,7 @@ onMounted(async () => {
                                 </thead>
                                 <tbody>
                                     <tr v-for="artist in props.data.artist_moderation">
-                                        <td>{{ artist.first_name }} {{ artist.last_name }}</td>
+                                        <td>{{ artist.last_name }}, {{ artist.first_name }}</td>
                                         <td>
                                             <template v-if="artist.user_id == null"><span
                                                     class="badge bg-red-lt">Нет</span></template>
@@ -161,7 +168,7 @@ onMounted(async () => {
                                 </thead>
                                 <tbody>
                                     <tr v-for="artist in props.data.artists">
-                                        <td>{{ artist.first_name }} {{ artist.last_name }}</td>
+                                        <td>{{ artist.last_name }}, {{ artist.first_name }}</td>
                                         <td>
                                             <template v-if="artist.user_id == null"><span
                                                     class="badge bg-red-lt">Нет</span></template>

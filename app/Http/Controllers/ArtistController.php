@@ -28,7 +28,8 @@ class ArtistController extends Controller
 
         $data['artists'] = Artist::where('moderation_status', 0)
             ->orWhere('moderation_status', 3)
-            ->orderBy('updated_at', 'DESC')
+            ->orderBy('last_name', 'ASC')
+            ->orderBy('first_name', 'ASC')
             ->get();
 
         return Inertia::render('Artists/Artists', ['data' => $data]);
