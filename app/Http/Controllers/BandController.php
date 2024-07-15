@@ -32,7 +32,7 @@ class BandController extends Controller
 
         $data['bands'] = Band::where('moderation_status', 0)
             ->orWhere('moderation_status', 3)
-            ->orderBy('updated_at', 'DESC')
+            ->orderBy('title', 'ASC')
             ->get();
 
         return Inertia::render('Bands/Bands', ['data' => $data]);
@@ -45,6 +45,21 @@ class BandController extends Controller
             ->get();
 
         return response()->json($band);
+    }
+
+    public function createItem(Request $request)
+    {
+
+        $newItem = Band::create(
+            [
+                'user_id' => auth()->user()->id,
+                'title' => $request->data['title'],
+                'enable_page' => 0,
+                'moderation_status' => 3
+            ]
+        );
+
+        return response()->json($newItem);
     }
 
 

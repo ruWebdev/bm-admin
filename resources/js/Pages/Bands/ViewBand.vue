@@ -56,6 +56,7 @@ const mainInfoForm = ref({
     page_alias: props.data.band.page_alias,
     external_link: props.data.band.external_link,
     enable_page: props.data.band.enable_page,
+    moderation_status: props.data.band.moderation_status
 })
 
 function openNewPhotoModal() {
@@ -124,6 +125,10 @@ async function denyModeration() {
     }
 }
 
+onMounted(async () => {
+    translitTitle()
+});
+
 </script>
 
 <template>
@@ -154,7 +159,8 @@ async function denyModeration() {
                 </svg>
                 Сохранить изменения
             </button>
-            <button class="btn btn-danger d-none d-sm-inline-block me-2" @click="denyModeration()">
+            <button v-if="mainInfoForm.moderation_status != 3" class="btn btn-danger d-none d-sm-inline-block me-2"
+                @click="denyModeration()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-circle-off">
@@ -164,7 +170,8 @@ async function denyModeration() {
                 </svg>
                 Отклонить
             </button>
-            <button class="btn btn-success d-none d-sm-inline-block" @click="acceptModeration()">
+            <button v-if="mainInfoForm.moderation_status != 3" class="btn btn-success d-none d-sm-inline-block"
+                @click="acceptModeration()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-checkbox">

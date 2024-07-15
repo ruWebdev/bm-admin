@@ -61,6 +61,7 @@ Route::controller(BandController::class)->middleware(['auth', 'verified'])->grou
         Route::get('/bands', 'index')->name('bands'); // Отправная точка       
 
         Route::post('/bands/get_all', 'getAllBands')->name('bands.get_all'); // Отправная точка        
+        Route::post('/bands/create', 'createItem')->name('bands.create'); // Отправная точка     
         Route::post('/bands/create_from_select', 'createBandFromSelect')->name('bands.create_from_select'); // Отправная точка    
 
         Route::get('/bands/view/{id}', 'viewBand')->name('bands.view'); // Отправная точка       

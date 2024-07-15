@@ -47,11 +47,18 @@ function closeNewNewsModal() {
 
 async function createNewNews() {
     try {
-        const result = await axios.post('/news/create', {
+        const result = await axios.post('/bands/create', {
             data: newNewsForm.value,
         });
         closeNewNewsModal();
-        props.data.news.push(result.data);
+        props.data.bands.push(result.data);
+
+        props.data.bands.sort(function (a, b) {
+            var textA = a.title.toUpperCase();
+            var textB = b.title.toUpperCase();
+            return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+        });
+
     } catch (e) {
 
     }
@@ -188,14 +195,14 @@ onMounted(async () => {
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Добавление новости</h5>
+                        <h5 class="modal-title">Добавление коллектива</h5>
                         <button type="button" class="btn-close" @click="closeNewNewsModal()"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label class="form-label">Заголовок</label>
+                                    <label class="form-label">Название</label>
                                     <input type="text" class="form-control" name="example-text-input"
                                         placeholder="Заполните поле" v-model="newNewsForm.title">
                                 </div>
@@ -207,7 +214,8 @@ onMounted(async () => {
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn me-auto" @click="closeNewNewsModal()">Отменить</button>
-                        <button type="button" class="btn btn-primary" @click="createNewNews()">Создать новость</button>
+                        <button type="button" class="btn btn-primary" @click="createNewNews()">Создать
+                            коллектив</button>
                     </div>
                 </div>
             </div>
