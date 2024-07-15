@@ -139,12 +139,12 @@ onMounted(async () => {
 
         <template #BreadCrumbs>
             <Link class="text-primary" href="/dashboard">Главная страница</Link> /
-            <Link class="text-primary" href="/bands">Мои коллективы</Link> /
-            Редактирование коллектива
+            <Link class="text-primary" href="/bands">Коллективы</Link> /
+            {{ props.data.band.title }}
         </template>
 
         <template #PageTitle>
-            Редактирование коллектива
+            {{ props.data.band.title }}: редактирование коллектива
         </template>
 
         <template #RightButtons>

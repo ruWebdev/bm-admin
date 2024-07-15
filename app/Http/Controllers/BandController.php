@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Models\User;
 
+use App\Models\Artist;
+
 use App\Models\Band;
 use App\Models\BandParticipant;
 use App\Models\BandPhoto;
@@ -178,6 +180,7 @@ class BandController extends Controller
         $band->city = $request->city;
         $band->page_alias = $request->page_alias;
         $band->external_link = $request->external_link;
+        $band->enable_page = $request->enable_page;
 
         $band->save();
     }
@@ -196,6 +199,39 @@ class BandController extends Controller
         }
 
         return response()->json($band);
+    }
+
+    public function addBandParticipant($id, Request $request)
+    {
+
+        $data = array(
+            'band_id' => $id,
+        );
+
+        $artist = Artist::find($request->value);
+
+        $data['artist_id'] = $artist->id;
+        $data['artist_id'] = $artist->id;
+
+        if ($artist->user_id != null) {
+            $data['user_id'] = $artist->user_id;
+            $data['role'] = 'participant';
+        }
+
+        $newBandParticipant = BandParticipant::create($data);
+
+        $newBandParticipant->last_name = $artist->last_name;
+        $newBandParticipant->first_name = $artist->first_name;
+
+
+        return response()->json($newBandParticipant);
+    }
+
+    public function deleteBandParticipant(Request $request)
+    {
+        if ($request->id) {
+            BandParticipant::where('id', $request->id)->delete();
+        }
     }
 
     public function acceptModeration($id)

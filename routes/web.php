@@ -67,6 +67,9 @@ Route::controller(BandController::class)->middleware(['auth', 'verified'])->grou
         Route::get('/bands/view/{id}', 'viewBand')->name('bands.view'); // Отправная точка       
         Route::post('/bands/save_changes/{id}', 'updateBand')->name('bands.update'); // Отправная точка  
 
+        Route::post('/bands/add_participant/{id}', 'addBandParticipant')->name('bands.add_participant'); // Отправная точка        
+        Route::post('/bands/delete_participant/{id}', 'deleteBandParticipant')->name('bands.delete_participant'); // Отправная точка  
+
         Route::post('/bands/accept_moderation/{id}', 'acceptModeration')->name('bands.accept_moderation'); // Отправная точка 
         Route::post('/bands/deny_moderation/{id}', 'denyModeration')->name('bands.deny_moderation'); // Отправная точка 
 
