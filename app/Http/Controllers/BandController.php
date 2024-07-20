@@ -181,6 +181,8 @@ class BandController extends Controller
         $band->page_alias = $request->page_alias;
         $band->external_link = $request->external_link;
         $band->enable_page = $request->enable_page;
+        $band->video_type = $request->video_type;
+        $band->video_code = $request->video_code;
 
         $band->save();
     }

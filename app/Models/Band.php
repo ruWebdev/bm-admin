@@ -29,6 +29,8 @@ class Band extends Model
         'long_description',
         'enable_page',
         'moderation_status',
+        'video_type',
+        'video_code',
     ];
 
     protected $casts = [

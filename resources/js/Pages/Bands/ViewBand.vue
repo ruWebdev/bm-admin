@@ -56,7 +56,9 @@ const mainInfoForm = ref({
     page_alias: props.data.band.page_alias,
     external_link: props.data.band.external_link,
     enable_page: props.data.band.enable_page,
-    moderation_status: props.data.band.moderation_status
+    moderation_status: props.data.band.moderation_status,
+    video_type: props.data.band.video_type,
+    video_code: props.data.band.video_code,
 })
 
 function openNewPhotoModal() {
@@ -254,7 +256,22 @@ onMounted(async () => {
                                                 placeholder="Не заполнено" v-model="mainInfoForm.city">
                                         </div>
                                     </div>
-
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Видео: Тип</label>
+                                            <select class="form-select" v-model="mainInfoForm.video_type">
+                                                <option value="youtube" selected>Youtube</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Видео: Код ролика</label>
+                                            <input type="text" class="form-control" name="example-text-input"
+                                                placeholder="Не заполнено" maxlength="100"
+                                                v-model="mainInfoForm.video_code">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane" id="tabs-media">

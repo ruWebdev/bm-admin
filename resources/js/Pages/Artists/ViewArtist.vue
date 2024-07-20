@@ -100,6 +100,8 @@ const mainInfoForm = ref({
     show_birth_date: props.data.artist.show_birth_date,
     moderation_status: props.data.artist.moderation_status,
     enable_page: props.data.artist.enable_page,
+    video_type: props.data.artist.video_type,
+    video_code: props.data.artist.video_code,
 })
 
 function openPhotoModal(type) {
@@ -363,6 +365,22 @@ onMounted(async () => {
                                             <ckeditor :editor="editor" v-model="mainInfoForm.long_description"
                                                 :config="editorConfig">
                                             </ckeditor>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Видео: Тип</label>
+                                            <select class="form-select" v-model="mainInfoForm.video_type">
+                                                <option value="youtube" selected>Youtube</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Видео: Код ролика</label>
+                                            <input type="text" class="form-control" name="example-text-input"
+                                                placeholder="Не заполнено" maxlength="100"
+                                                v-model="mainInfoForm.video_code">
                                         </div>
                                     </div>
                                 </div>

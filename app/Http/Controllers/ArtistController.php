@@ -130,6 +130,8 @@ class ArtistController extends Controller
         $artist->show_birth_place = $request->show_birth_place;
         $artist->show_birth_date = $request->show_birth_date;
         $artist->enable_page = $request->enable_page;
+        $artist->video_type = $request->video_type;
+        $artist->video_code = $request->video_code;
 
         $artist->save();
     }
