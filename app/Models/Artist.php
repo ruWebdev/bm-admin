@@ -32,7 +32,9 @@ class Artist extends Model
         'moderation_status',
         'enable_page',
         'main_photo',
-        'page_photo'
+        'page_photo',
+        'video_type',
+        'video_code',
     ];
 
     protected $casts = [
