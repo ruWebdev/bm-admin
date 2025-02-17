@@ -312,6 +312,7 @@ onMounted(async () => {
                                             <label class="form-label">Видео: Тип</label>
                                             <select class="form-select" v-model="mainComposerForm.video_type">
                                                 <option value="youtube" selected>Youtube</option>
+                                                <option value="vkvideo" selected>VK Video</option>
                                             </select>
                                         </div>
                                     </div>
